@@ -13,7 +13,7 @@
 
     - ggmap
         - slides from Natalie
-        - `Rmd` version of the exercises [here](https://github.com/NHM-STARS/materials18/blob/master/day3/04_ggmpa-basics.Rmd). 
+        - `Rmd` version of the exercises [here](https://github.com/NHM-STARS/materials18/blob/master/day3/04_ggmap-basics.Rmd). 
         - datasets for the exercises are in the `data-for-stats/` folder
 
     - leaflet
