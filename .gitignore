@@ -1,0 +1,12 @@
+.DS_Store
+.Rhistory
+day01/presentations/*html
+render.R
+day01/resources/
+day01/RDM_intro.Rmd
+day04/libs/
+*/presentations/libs/
+*/presentations/assets/
+*/presentations/images/
+*/presentations/*.html
+.Rproj.user
