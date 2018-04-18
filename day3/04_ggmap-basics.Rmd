@@ -1,0 +1,300 @@
+---
+title: "Basic ggmap tutorial"
+output: html_document
+---
+  
+  ```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**There is a presentation which goes with this handout, use it to add notes if you need to.**
+
+FYI: This doesn't compile well with `Knit` due to the vagueries of Google, internet connections and R all working together. So just work with the `.Rmd`
+  
+Before we start, remember we need to do a couple of things...
+
+#### 1. Tell R where your data are
+See the introduction handout if you can't remember how.
+
+Check it worked using:
+```{r}
+list.files()
+```
+or look at the Files tab
+
+#### 2. Load the packages needed
+You may need to install `ggmap` if you didn't do that already.
+```{r}
+library(tidyverse)
+library(ggmap)
+```
+
+## ggmap magic
+
+We first use Google maps (and the `get_map` function) to extract map data with latitude and longitude or postcodes or location names. THEN we use `ggmap` to plot the data.
+
+**This requires an internet connection**. Note that each IP address can only download 250 a day.
+
+```{r, message = FALSE, warning = FALSE}
+mymap <- get_map(location = "Manchester, UK")
+ggmap(mymap)
+```
+
+You can change the zoom...
+
+```{r, message = FALSE, warning = FALSE}
+mymap <- get_map(location = "Manchester, UK",
+                 zoom = 17)
+ggmap(mymap)
+```
+
+...the map type...
+
+```{r, message = FALSE, warning = FALSE}
+mymap <- get_map(location = "New York",
+                 maptype = "satellite",
+                 zoom = 10)
+ggmap(mymap, extent = "device")
+```
+
+... the maptype and source of the map...
+
+```{r, message = FALSE, warning = FALSE}
+mymap <- get_map(location = "York",
+                 source = "osm")
+ggmap(mymap)
+```
+
+...use a postcode (you can find your house!)...
+
+```{r, message = FALSE, warning = FALSE}
+mymap <- get_map(location = "SW7 5BD", 
+                 maptype = "satellite", 
+                 zoom = 17)
+ggmap(mymap)
+```
+
+...use lat long coordinates...
+
+```{r, warning = FALSE}
+mymap <- get_map(location = c(lon = 2.2945, lat = 48.8584),
+                 maptype = "satellite",
+                 zoom = 17)
+ggmap(mymap, extent = "device")
+```
+
+...change the colour and multiple options etc. etc.
+
+```{r, message = FALSE, warning = FALSE}
+mymap <- get_map(location = c(lon = 8.5417, lat = 47.3769),
+    color = "color",
+    source = "google",
+    maptype = "satellite",
+    zoom = 15)
+
+ggmap(mymap, extent = "device")
+```
+
+- `color` lets you set it as colour or black and white (bw)
+- `source` allows you to use google, open street map etc. if you prefer
+- `maptype` has lots of options, we'll explore some below.
+- `zoom` tells R how zoomed in to be. 3 = continent, 10 = city, 21 = building
+- See `?get_map` for more details.
+
+`ggmap` also has options you can change:
+```{r, message = FALSE, warning = FALSE}
+ggmap(mymap,
+    extent = "device",
+    ylab = "Latitude",
+    xlab = "Longitude")
+```
+
+- `extent = device` makes the whole plotting window into a map
+- If you wanted to see the lat long axes and/or a legend use `extent = panel`.
+
+Look at some of the other get_map options...
+
+```{r, message = FALSE, warning = FALSE}
+mapData1 <- get_map(location = "Berlin",
+    color = "color",
+    source = "google",
+    maptype = "satellite",
+    zoom = 13)
+
+ggmap(mapData1,
+    extent = "device",
+    ylab = "Latitude",
+    xlab = "Longitude")
+```
+
+### TERRAIN maps
+```{r, message = FALSE, warning = FALSE}
+mapData2 <- get_map(location = "Boulder",
+	color = "color",
+    source = "google",
+    maptype = "terrain",
+    zoom = 13)
+
+ggmap(mapData2,
+    extent = "device",
+    ylab = "Latitude",
+    xlab = "Longitude")
+```
+
+### ROAD MAP
+```{r, message = FALSE, warning = FALSE}
+mapData3 <- get_map(location = "Birmingham, UK",
+    color = "color",
+    source = "google",
+    maptype = "roadmap",
+    zoom = 13)
+
+ggmap(mapData3,
+    extent = "device",
+    ylab = "Latitude",
+    xlab = "Longitude")
+```
+
+### HYBRID maps
+```{r, message = FALSE, warning = FALSE}
+mapData4 <- get_map(location = "Paris",
+	color = "color",
+    source = "google",
+    maptype = "hybrid",
+    zoom = 13)
+
+ggmap(mapData4,
+    extent = "device",
+    ylab = "Latitude",
+    xlab = "Longitude")
+```
+
+### WATERCOLOR (useless but pretty!). Uses stamen not google.
+```{r, message = FALSE, warning = FALSE}
+mapData5 <- get_map(location = "London",
+    color = "color",
+    source = "stamen",
+    maptype = "watercolor",
+    zoom = 13)
+
+ggmap(mapData5,
+    extent = "device",
+    ylab = "Latitude",
+    xlab = "Longitude")
+```
+
+## Adding things to maps
+
+Let's use a map of London, centred on London Bridge.
+
+```{r, message = FALSE, warning = FALSE}
+mapLondon <- get_map(location = "London Bridge",
+    color = "color",
+    source = "google",
+    maptype = "satellite",
+    zoom = 13)
+```
+
+We can add points with lat long coordinates. This uses `+ geom_point` (just like `ggplot` with layers)
+
+This is St Paul's
+
+```{r, message = FALSE, warning = FALSE}
+ggmap(mapLondon, extent = "device") +
+  geom_point(aes(x = -0.0984, y = 51.5138),
+             alpha = 0.5, color = "deeppink", 
+             size = 10, pch = 16)
+```
+
+We can annotate points...
+```{r, message = FALSE, warning = FALSE}
+ggmap(mapLondon, extent = "device")+
+  geom_text(aes(x = -0.0984, y = 51.5138, label = "St Paul’s"), 
+    colour = "yellow", size = 5)
+```
+
+Or do both!
+```{r, message = FALSE, warning = FALSE}
+ggmap(mapLondon, extent = "device") +
+  geom_point(aes(x = -0.0984, y = 51.5138, 51.53),
+             alpha = 0.1, color = "deeppink", 
+             size = 10, pch = 16)+
+  geom_text(aes(x = -0.0984, y = 51.5138, label = "St Paul’s"), 
+            colour = "yellow", size = 5)
+```
+
+`alpha` is transparency (1 = opaque, 0 = invisible!)
+
+We can also give R a dataframe with the latitude and longitude of multiple places
+
+Let's plot the underground stations on our map:
+```{r, message = FALSE, warning = FALSE}
+underground <- read.csv("data-for-stats/underground.csv")
+glimpse(underground)
+
+ggmap(mapLondon, extent = "device") +
+  geom_point(aes(x = Longitude, y = Latitude),
+             data = underground, alpha = 0.8, color = "darkred")
+```
+
+
+We can scale the point sizes by a numeric variable...
+```{r, message = FALSE, warning = FALSE}
+ggmap(mapLondon, extent = "panel") + # We now use panel so we can see the legend
+    geom_point(aes(x = Longitude, y = Latitude, size = NumberLines),
+               data = underground, alpha = 0.8, color = "darkred") +
+    labs(x = "Longitude", y = "Latitude") # adds label names
+```
+
+Or change the color gradient by a numeric variable...
+```{r, message = FALSE, warning = FALSE}
+ggmap(mapLondon, extent = "panel") +
+  geom_point(aes(x = Longitude, y = Latitude, color = NumberLines),
+             data = underground, alpha = 0.8, size = 5) +
+  labs(x = "Longitude", y = "Latitude")
+```
+
+We can also annotate points (looks a bit messy with this dataset)
+```{r, message = FALSE, warning = FALSE}
+ggmap(mapLondon, extent = "panel") +
+  # add the points, size differs by NumberLines
+  geom_point(aes(x = Longitude, y = Latitude, size = NumberLines),
+             data = underground, alpha = 0.8, color = "darkred") +
+  # add the text, info from underground data frame
+  geom_text(aes(x = Longitude, y = Latitude, label = Station),
+            data = underground, colour = "lightblue", size = 2) +
+  labs(x = 'Longitude', y = 'Latitude') + 
+  ggtitle("Underground stations in East London") # adds a title
+```
+
+
+We can also join point using lines using `geom_path`. This joins two defined stations:
+```{r, message = FALSE, warning = FALSE}
+ggmap(mapLondon, extent = "device") + 
+  geom_point(aes(x = Longitude, y = Latitude), 
+             data = underground, alpha = 0.8, color = "darkred") +
+  geom_path(aes(x = Longitude, y = Latitude), 
+            data = filter(underground, Station == "Bethnal Green" | Station == "Embankment"),
+            color = "cornflowerblue", size = 1)
+```
+
+Can also join everything but it looks hideous (or glorious!) in this case!
+```{r, message = FALSE, warning = FALSE}
+ggmap(mapLondon, 
+	  extent = "device") +
+geom_point(aes(x = Longitude, y = Latitude), 
+	data = underground, alpha = 0.8, color = "yellow") +
+geom_path(aes(x = Longitude, y = Latitude), data = underground, color = "hotpink", size = 1)
+```
+
+To get distances between places you can use Google via `mapdist`. Note that you have a 2500 query limit per day You can see how many you have left using:
+```{r, eval = FALSE}
+distQueryCheck()
+```
+
+To get distances between places:
+```{r, message = FALSE, warning = FALSE}
+mapdist("London, UK", "Zurich, Switzerland", mode = "driving")
+mapdist("London, UK", "Sheffield, UK", mode = "walking")
+mapdist("Sheffield, UK", "Zurich, Switzerland", mode = "bicycling")
+```
