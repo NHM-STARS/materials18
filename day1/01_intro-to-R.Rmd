@@ -1,0 +1,171 @@
+---
+title: "Introduction to R"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**There is a presentation which goes with this handout, use it to add notes if you need to.**
+
+### The basics
+First let's use R really simply as an enormous calculator...
+
+Try and run each of the commands below. Remember you need to click on the green arrow on the right hand side. Some of these may not work. Try and think about *why* and see if you can fix them. Make notes to yourself to explain what each is doing.
+
+```{r}
+1 + 1
+```
+
+```{r}
+2 * 7 / 8 - 9
+```
+
+```{r}
+log(exp(1))
+```
+
+```{r}
+log(1000)
+```
+
+What sort of log does the function `log` perform?
+```{r}
+?log
+```
+
+```{r}
+sin(2 * pi)
+```
+
+```{r}
+2^10
+```
+
+```{r, eval = F}
+squareroot(81)
+```
+What is the function for square root? How could you find this out?
+
+### Thinking about functions and arguments
+To get R to do things we use functions. For example, in the exercise above `log` and `sin` and `pi` are all functions (and so are `+`, `*`, `-`, `\`, and `^` for that matter). Again run the code below and make comments to help yourself remember what is going on with each step.
+
+What does the function `:` do in the code below?
+```{r}
+1:10
+```
+What does the [1] represent? Try `1:100` to see if you can work it out.
+
+We can get the same result using the function `seq`:
+```{r}
+seq(from = 1, to = 10, by = 1)
+```
+Adjust the numbers to see what happens. What are the words `by`, `from` and `to`?
+
+What is different when you run this code?
+```{r}
+seq(from = 1, to = 10, length = 20)
+```
+
+We can also "assign" values to objects, i.e. give them names. Let's make an object called `x`.
+```{r}
+x <- 1:10
+```
+How do we "see" x? Add a bit of code so you can look at x.
+
+Let's make another object called `y`.
+```{r}
+y <- 1:10
+```
+
+```{r, eval = F}
+x + Y
+```
+Why doesn't this code work? Fix it and think about the answer. How are `x` and `y` added together?
+
+### Some conventions
+- `<-` is the "assignment operator"
+- functions have arguments (`by`, `from`, `to` and `length` are arguments of `seq`)
+- R is vectorised - when you add two vectors together, it is element-by-element
+- `>` is the prompt
+- R is case sensitive
+- Spaces don't matter, except in variable names
+ 
+### R packages - installing and loading
+Packages are R's special magic power. The basic version of R that you all downloaded is called `base` R. However, to get R to do some of the specialised analyses we need, we need to add packages that were designed to run these analyses. There are packages to help with pretty much anything you could ever need. Today we'll use some packages for manipulating and tidying data (`dplyr`, `tidyr` and `lubridate`) and plotting nice graphs (`ggplot2`).
+
+R packages need to be installed and loaded for you to use them. It's useful to think of this like an app on your smart phone. To use an app you download it from the App Store once, but everytime you want to use it on your phone you have to tap it. R packages are similar. We download them once (using `install.packages("package_name")` or the Packages menu on RStudio) but need to load them in each R session we need them for.
+
+We load them using the function `library(package_name)`.
+
+To make things easier, a lot of the packages we will use have been bundled up into one package called `tidyverse` (more on this later). We can install all of the packages in one go using `install.packages("tidyverse")`
+
+We then load them as below.
+
+```{r}
+library(tidyverse)
+```
+
+Note that you might get some warnings when you do this. These just tell you that R already has some functions with the same names as those in `dplyr` and `tidyr`, and that from now on it will use the `dplyr` and `tidyr` versions by default. This is fine!
+
+### Where is my data?
+When you want to read data into R, you need to tell R where to look. There are several ways to do this. When using an `.Rmd` file like this one, RStudio will cleverly look in the folder the `.Rmd` file is in. We call this setting the working directory - the folder the `.Rmd` file is in is now your working directory. Any files or figures you make and write to file will also go to that folder.
+
+Sometimes you won't have a `.Rmd` file. In that case you can set the working directory really simply by going to the Session menu in RStudio, then picking Choose Working Directory and choosing the right folder.
+
+Alternatively (my favourite option) you can start and RProject for all the analyses that will be related to this paper/report/thesis chapter. To do this, go to File > New Project > then either 1) choose New Directory > New Project > Create Project if you don't have a folder ready, or 2) choose Existing Directory and then choose the folder you want to use and click Create Project.
+
+You can check this worked using
+```{r}
+list.files()
+```
+This will print a list of the file names in your working directory. You could also click on the Files tab (on the bottom right hand window in RStudio, if you haven't moved them around) and see what files are in your working directory.
+
+### Importing data
+Once you've set the working directory to the correct folder, it's easy to read in data. We'll play with the `compensation.csv` dataset today. To read in a csv file we can use `read.csv` in base R. But since we are using the `tidyverse` let's use the newer `read_csv` function from the `readr` package which is part of the `tidyverse`. 
+
+```{r}
+compensation <- read_csv("compensation.csv")
+```
+
+Now we're ready to start playing with the data. 
+
+### Viewing the data with base R
+The next, and very important step, of any data analysis is to check that R read in your dataset correctly.
+
+Base R has a number of ways of doing this. Try out the following and add notes about what each of them does.
+
+```{r}
+dim(compensation) 
+```
+
+```{r}
+names(compensation)
+```
+
+```{r}
+head(compensation)
+```
+
+```{r}
+tail(compensation)
+```
+
+```{r}
+str(compensation)
+```
+
+```{r, eval = F}
+compensation
+```
+
+Note that each R analysis should begin with the same few steps:
+
+1. Load the libraries/packages you need using `library(package_name)`
+2. Tell R where your data are (set the working directory or create an RProject)
+3. Check the files are in the directory
+4. Read in the data
+5. LOOK at the data
+
+**Remember to also make plenty of notes to tell yourself what you are doing and WHY...**

@@ -1,0 +1,290 @@
+---
+title: "Dealing with data - `dplyr`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+**There is a presentation which goes with this handout, use it to add notes if you need to.**
+
+Before we start, remember we need to do a couple of things...
+
+#### 1. Tell R where your data are
+See the introduction to R handout if you can't remember how.
+
+Check it worked using:
+```{r}
+list.files()
+```
+or looking at the Files tab
+
+#### 2. Load the packages needed
+We already downloaded these and don't need to do that again. 
+```{r}
+library(tidyverse)
+```
+
+#### 3. Import the data
+We are going to work with the dataset `compensation.csv`
+```{r}
+compensation <- read_csv("compensation.csv")
+```
+
+#### 4. Look at the data
+Can you remember how to do this using base R? 
+```{r}
+str(compensation)
+```
+We will do this below using `dplyr` instead...
+
+### Data manipulation with `dplyr`
+`dplyr` is an excellent, fairly new, package for manipulating dataframes (the core data storage format in R).
+
+Each `dplyr` function does one thing, and does it very quickly and efficiently. It works on dataframes to produce new dataframes. 
+
+With each `dplyr` function the first argument is always the name of the dataframe (here we called it `compensation`).
+
+### Viewing data with `dplyr`
+We can also look at our data using `dplyr`. Make notes on what these do.
+
+```{r}
+tbl_df(compensation)
+```
+
+```{r}
+glimpse(compensation)
+```
+
+How is this different from `str`? Which method do you prefer?
+
+### Subsetting with dplyr
+Next let's subset our data using the `dplyr` functions `select` and `slice`.
+
+**`select` columns**
+
+What do these functions do?
+```{r}
+select(compensation, Root)
+```
+
+```{r}
+select(compensation, Root, Fruit)
+```
+
+```{r}
+select(compensation, -Root)
+```
+
+**`slice` rows**
+
+```{r}
+slice(compensation, 2)
+```
+
+```{r}
+slice(compensation, 2:5)
+```
+
+```{r}
+slice(compensation, c(2,5))
+```
+
+### Assigning the outputs to a new name
+At the moment you'll notice that the dataframes just print out the results. This is lovely for learning what is happening as you can see what is happening instantly. But what if we want to store the results so we can use them later? All we need to do is *assign* the results to a new object/name. For example:
+
+```{r}
+new.dataframe <- slice(compensation, c(2,5))
+```
+`new.dataframe` is now a dataframe containing only the 2nd and 5th row of `compensation`. Remember that if you use the name `compensation` this will overwrite the original `compensation`. So be careful. Though note that it won't change the raw data so if you do make that mistake just read the data in again! 
+
+#### PRACTICAL
+
+1. Create a dataframe containing only the Root column
+```{r}
+select(compensation, Root)
+```
+
+2. Create a dataframe containing only the 8th row
+```{r}
+slice(compensation, 8)
+```
+
+3. Create a dataframe containing only the 8th row of the Fruit column. There are THREE fundamentally different ways of doing this, if you work out one way, try and find the other two...
+
+```{r}
+# nesting
+select(slice(compensation, 8), Fruit)
+slice(select(compensation, Fruit), 8)
+
+# assigning
+fruit.only <- select(compensation, Fruit)
+slice(fruit.only, 8)
+
+# piping
+compensation %>%
+  select(Fruit) %>%
+  slice(8)
+```
+
+### Subsetting by attributes: `filter`
+`filter` will allow you to subset a dataframe by its attributes, for example we can select only the dataframe for rows where the Root value is less than or equal to 10 as follows:
+
+```{r}
+compensation %>% 
+  filter(Root <= 10)
+```
+
+Note that `filter` uses *logical operators*. R has lots of these built in:
+
+- `>` = greater than
+- `<` = less than
+- `>=` = greater than or equal to
+- `<=` = less than or equal to
+- `==` = equal to
+- `!=` = not equal to
+
+Try out some of these in the code above.
+
+#### PRACTICAL
+
+1. Create a new data frame containing only rows where the Fruit values > 80.
+
+```{r}
+compensation %>%
+  filter(Fruit > 80)
+```
+
+2. Create a new dataframe containing only the Ungrazed rows.
+
+```{r}
+compensation %>%
+  filter(Grazing == "Ungrazed")
+```
+
+3. Using two `dplyr` functions, and piping, create a dataframe containing the **Root** values where Fruit is greater than 80. 
+
+```{r}
+root.fruit80 <- 
+  compensation %>%
+    filter(Fruit > 80) %>%
+    select(Root)
+
+root.fruit80
+```
+
+
+### Creating new columns: `mutate`
+Often we want to create new columns in our data. For example if we want to transform our data, or perform some kind of calculation using multiple columns, and then use this again. `mutate` does this.
+
+For example, if we wanted to convert the Root values from mm to cm, we could use mutate to make a new column of Root/100.
+
+```{r}
+compensation2 <- 
+  compensation %>%
+    mutate(Root_cm = Root/100)
+
+head(compensation2)
+```
+
+### Sorting the data: `arrange`
+Sometimes (admittedly rarely!) we might also want to sort our data. What does the following code do? Make notes to remind yourself.
+
+```{r}
+compensation %>%
+  arrange(Fruit)
+```
+
+```{r}
+compensation %>%
+  arrange(Grazing, Fruit)
+```
+
+Use the help files to work out how to arrange compensation with Grazing in reverse alphabetical order.
+```{r}
+compensation %>%
+  arrange(desc(Grazing))
+```
+
+### Renaming variables: `rename`
+We also might want to rename variables, especially if they're long and complicated and we keep having to type them.
+
+```{r}
+compensation %>%
+  rename(FruityMcFruitFace = Fruit)
+```
+
+### Calculating summary statistics: `summarise`
+My favourite bit of `dplyr` is how easy it makes summarising data. We do this using the `summarise` function. We can use summarise to extract all kinds fo summary stats using various functions including means, standard deviations, variances etc.
+
+What R functions can we use to get the following?
+
+- mean
+- standard deviation
+- variance
+- sample size
+- standard error (you might need to look up the formula for this in Google. Note there is no inbuilt R function!)
+
+Let's extract the mean of the Fruit column.
+
+```{r}
+compensation %>% 
+  summarise(
+    meanF = mean(Fruit))
+```
+
+`meanF` is just a label we can use to make it clear what we extracted. Note that these results print to the screen. How would we change the code so we store the mean and standard deviation for us to use later?  
+
+Now calculate the mean and standard deviation of the Fruit column and save it for later use.
+
+```{r}
+summary.data <- 
+compensation %>% 
+  summarise(
+    meanF = mean(Fruit),
+    sdF = sd(Fruit))
+
+summary.data
+```
+
+
+### Summarising by groups: `group_by`
+We can also really easily summarise by groups, so for example if we want the mean of the Grazed and Ungrazed fruits...
+
+```{r}
+summary.fruit <- compensation %>% 
+  group_by(Grazing) %>%
+  summarise(
+    meanFruit = mean(Fruit),
+    sdFruit = sd(Fruit))
+
+summary.fruit
+```
+
+Note that we can also string together several `dplyr` functions.
+
+```{r}
+compensation %>%
+  mutate(FRratio = Fruit/Root) %>%
+  group_by(Grazing) %>%
+  summarise(
+    meanFRrat = mean(FRratio))
+```
+
+#### PRACTICAL
+
+Create a new dataframe, with a name of your choice, that contains the mean and standard error of the Fruit column, for the Grazed and Ungrazed groups.
+
+```{r}
+pedantic <- 
+  compensation %>%
+    group_by(Grazing) %>%
+      summarise(
+        meanFruit = mean(Fruit),
+        seFruit = sqrt(var(Fruit)/n())
+      )
+
+pedantic
+```
