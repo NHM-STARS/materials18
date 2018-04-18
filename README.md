@@ -7,7 +7,7 @@ Repository containing materials and useful links associated with the course.
 
 - Morning sessions run from 9.30am to 1pm.
 - Afternoon sessions run from 2pm to 5.30pm.
-- Coffee breaks will be at 11am and 3pm (but with some flexibility).
+- Coffee breaks will be at 11am and 3.30pm (but with some flexibility).
 
 ## Day 1 
 
