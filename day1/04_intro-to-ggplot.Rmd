@@ -85,4 +85,10 @@ Use color to emphasize certain parts of a graph, or to push other parts to the b
 
 There are **many** other options and different opinions on making graphics. Let's start with some of the most common ones, and make some plots!
 
+### How do we make a ggplot - step by step
 
+1. Look at your data and decide what kind of plot you want to make
+2. Fit your model
+3. Look at the assumptions
+4. Look at the results
+5. Add interpretation to your graph
