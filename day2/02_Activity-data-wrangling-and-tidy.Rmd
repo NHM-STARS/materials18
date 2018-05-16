@@ -1,0 +1,13 @@
+---
+title: "Activity for data wrangling and tidying"
+author: "Sarah Supp"
+date: "5/16/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Let's practice our skills with a real dataset!
+
