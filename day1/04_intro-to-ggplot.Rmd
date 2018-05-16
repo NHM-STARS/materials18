@@ -1,0 +1,88 @@
+---
+title: "“Introduction to ggplot2""
+author: "Sarah Supp"
+date: "5/16/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+**There is a presentation which goes with this handout, use it to add notes if you need to.**
+
+Before we start, remember we need to do a couple of things...
+
+
+#### 1. Tell R where your data are
+See the introduction handout if you can't remember how.
+
+Check it worked using:
+```{r}
+list.files()
+```
+or look at the Files tab
+
+#### 2. Load the packages needed
+If you downloaded the entire "tidyverse" then you should already have the ggplot2 package. If not, then you will need to get it using "install.packages"
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+#### 3. Import the data
+First we are going to work with the dataset `MOMv3.3.txt`, which contains the body mass of all mammals on Earth (MOM = Masses Of Mammals). You can find the original source by Smith et al. 2003, [here](http://esapubs.org/archive/ecol/E084/094/)
+```{r}
+MOM <- read_tsv("MOMv3.3.txt", col_names=F)
+
+#Let's name the columns so they are easier to work with
+names(MOM) <- c("continent", "status", "order", "family", "genus", "species", "log_mass_g", "avg_mass_g", "reference")
+```
+
+#### 4. Look at the data
+```{r}
+glimpse(MOM)
+```
+
+### What plots do I need?
+Before we start to make plots, let's think about what we'd like to do more carefully.
+
+1. What kind of data do we have? e.g. quantitative? qualitative?
+2. What is the main question we'd like to answer?
+3. What would be interesting to show about our data?
+
+We can spend all day making graphs, but there are a few rules of thumb we can use to avoid wasting effort, and to avoid going down a rabbit hole that distracts us from our main purpose.
+
+1. What's your point? 
+Are you visualizing data for exploratory purposes (to understand it better) or for explanatory purposes (to make a specific point to someone else)?
+The goal is not always to display *all* of the data as neatly and completely as possible!
+
+2. Choose the right plot
+Think about what each kind of plot can tell you and how your data type constrains your options.
+Would quantitative or qualitative data be best shown on this plot?
+Would the plot be best to display discrete data (categories, integers) or continuous data?
+Does this plot show all the data, or does it break it into distinct groups?
+
+* histograms can show the *distribution* of 1 quantitative variable
+* bar charts or boxplots can *compare* quantities in 2 or more different categories
+* scatterplots show the *relationship* of two items
+* line charts can track *changes through time*, or show the relationship of 2 or more variables
+* pie charts compare parts of a whole
+* facets can *divide information into distinct groups*
+* layers can add more information as *color, shape, size* etc.
+* advanced plotting commands may include: heatmaps, layered or stacked bar graphs, maps, animated plots, 3D plots, and more!
+
+3. Less is more
+Don't overcomplicate and try to be as straightforward as possible. Especially for explanatory plots, you want to try to focus your reader's attention.
+
+4. Use color intentionally
+Use color to emphasize certain parts of a graph, or to push other parts to the background. For example, color could differentiate groups in a graph, or help your key results that are the most exciting to stand out!
+
+5. Add a title and good axis labels to help read and understand your graph
+
+6. Experiment, get feedback, and iterate - can someone else understand it?
+
+There are **many** other options and different opinions on making graphics. Let's start with some of the most common ones, and make some plots!
+
+
