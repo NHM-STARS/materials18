@@ -1,0 +1,20 @@
+---
+title: "Writing your own functions"
+author: "Sarah Supp"
+date: "5/16/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# So you want to write your own function...
+
+# Why would I want to write my own function?
+
+# How do I know I should write a function?
+
+# How do I get started writing a function?
+
+# What are best practices for writing a function?
