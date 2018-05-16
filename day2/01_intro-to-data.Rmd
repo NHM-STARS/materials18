@@ -1,0 +1,47 @@
+---
+title: "Introduction to data structures and hygiene"
+author: "Sarah Supp"
+date: "5/16/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+**There is a presentation which goes with this handout, use it to add notes if you need to.**
+
+Before we start, remember we need to do a couple of things...
+
+
+#### 1. Tell R where your data are
+See the introduction handout if you can't remember how.
+
+Check it worked using:
+```{r}
+list.files()
+```
+or look at the Files tab
+
+#### 2. Load the packages needed
+If you downloaded the entire "tidyverse" then you should already have the ggplot2 package. If not, then you will need to get it using "install.packages"
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+#### 3. Import the data
+First we are going to work with the dataset `MOMv3.3.txt`, which contains the body mass of all mammals on Earth (MOM = Masses Of Mammals). You can find the original source by Smith et al. 2003, [here](http://esapubs.org/archive/ecol/E084/094/)
+```{r}
+
+```
+
+#### 4. Look at the data
+```{r}
+
+```
+
+### What do I need to know about my data? How can that help me code? Work a project?
+
+
