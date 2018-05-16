@@ -1,0 +1,14 @@
+---
+title: "Intro to Git and GitHub"
+author: "Sarah Supp"
+date: "5/16/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Introduction to Git and GitHub
+
+#Hooray!
