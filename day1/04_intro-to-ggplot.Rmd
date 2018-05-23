@@ -43,6 +43,12 @@ names(MOM) <- c("continent", "status", "order", "family", "genus", "species", "l
 #### 4. Look at the data
 ```{r}
 glimpse(MOM)
+range(MOM$avg_mass_g)
+
+#oops, we have some missing valuses, denoted as -999. Let's remove those...
+library(naniar)
+MOM <- MOM %>%
+  replace_with_na(replace = list(avg_mass_g = -999, log_mass_g = -999.00))
 ```
 
 ### What plots do I need?
@@ -94,3 +100,163 @@ There are **many** other options and different opinions on making graphics. Let'
 5. Add text, labels, etc, to help interpret your graph
 
 # Let's try!
+
+It’s OK to be confused by ggplot when you are first starting. The syntax is different than base R and follows a different pattern to interpret it. But it is worth the effort!
+
+ggplot2 uses the “grammar of graphics”, an idea that making a visualization shouldn’t require memorizing the names of different kinds of plots in R (or any coding language), but rather having a conceptual understanding of the parts of your data that you want to show, and then putting together those pieces as “layers”. ggplot’s syntax forces us to think specifically about how the structure of our data, and our question, needs to fit into the structure and options of a graphic - cool!
+
+ggplot uses a basic template, and beyond the initial set-up, you get to choose which pieces you want to use, and what you want to specify. Start simple, and build up to complexity.
+
+All plots begin with the "canvas" :
+
+`ggplot(data, aes(x,y))`
+
+`aes()` is the “aesthetics” of the plot - in other words, which data do you want to use or “map” into your graphic. It always goes in the order x and y. If you want to make a distribution of only one variable, you would only specify x. 
+Alone, this won’t plot anything, because it just tells R that you want to make a plot, with data.
+
+We need to use `+` to add other "layers" to the plot and tell R to show us the plot.
+
+To tell it what kind of plot to make, you need to add a “geom_” layer. geom_type() tells ggplot what kind of “geometry” you want your graphic to have. Google is the best place to go for this, or the [ggplot2 website](http://ggplot2.tidyverse.org/reference/). There is built-in help in R, but the website is better to use if you need clarification or ideas.
+
+ggplot uses a different syntax to plot than the base R plot functions, so it looks a little different and takes some time to get used to. Start simple, and build up to complexity!
+
+ggplot() sets defaults for layers
+* Combine layers with `ggplot()` using +
+* You will need to have a  + at the end of every row, except the last one!
+* Must have at least one layer to plot
+* geom_ specifies how you want to plot, and may include statistical transformations
+* Add additional layers, as necessary
+* Order matters
+
+ggplot() arguments:
+* default dataset
+* set of mappings
+* ‘Aesthetics’ from variables aes()
+* `ggplot(GarlicMustardData, aes(x=bio12, y=AvgAdultHeight))`
+
+Add components of figures with layers
+* geom_point()
+* Simple scatter plot showing annual precipitation and average adult height
+`ggplot(GarlicMustardData, aes(x=bio12, y=AvgAdultHeight)) + geom_point()`
+
+
+Let's start with a single variable, and make a distribution - a histogram!
+
+## Histogram
+```{r}
+# base R histogram
+hist(MOM$log_mass_g)
+
+# ggplot histogram
+ggplot(MOM, aes(x = log_mass_g)) + 
+  geom_histogram()
+
+# specify binwidth
+ggplot(MOM, aes(log_mass_g)) + 
+  geom_histogram(binwidth = 0.5)
+
+# plot on log scale
+ggplot(MOM, aes(avg_mass_g)) + 
+  geom_histogram() + 
+  scale_x_log10()
+
+# add better labels
+ggplot(MOM, aes(log_mass_g)) + 
+  geom_histogram(binwidth = 0.5) + 
+  labs(x = "Log mass in grams", y = "count", title = "Masses of Mammals")
+
+# compare 2 or more categories
+ggplot(MOM, aes(log_mass_g)) + 
+  geom_histogram(binwidth = 0.5) + 
+  labs(x = "Log mass in grams", y = "count", title = "Masses of Mammals") + 
+  facet_wrap(~status)
+
+# add color
+ggplot(MOM, aes(log_mass_g)) + 
+  geom_histogram(binwidth = 0.5, aes(fill=status)) + 
+  labs(x = "Log mass in grams", y = "count", title = "Masses of Mammals")
+```
+
+To make a different kind of plot, we change the `geom` type that we are using. 
+
+## Boxplot 
+
+If we want to summarize the data using boxplots, we get a box that shows the median value of your data in the middle, with the top and bottom edges of the box representing the 25th and 75th percentile of the data. In other words, the middle 50% of the data lies between those edges. The ends of the lines coming from the edges represent 1.5 times the inter-quartile range (the range of the box values). Values below or above those whiskers are considered 'outliers' to R. You will want your x variable to be categorical or discrete so that it is clear what the boxes represent, and your y variable to be a quantitative variable.
+
+```{r}
+# make boxplots by continent
+ggplot(MOM, aes(x = continent, y = log_mass_g)) + 
+  geom_boxplot()
+```
+
+Now you try your own! Make a boxplot of the quantitative variable by some other categorical variable, and try adding layers for labels, color, or to compare different categories (facet).
+
+## Barplot
+To compare counts in a dataset by a particular category, use a bar plot. In the background, barplot uses the transformation stat_count()to count the number of rows for each category. 
+
+```{r}
+ggplot(MOM, aes(x=order)) +
+  geom_bar()
+
+#rotate axis labels to make them easier to read
+ggplot(MOM, aes(x=order)) +
+  geom_bar() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+#add color
+ggplot(MOM, aes(x=order)) +
+  geom_bar(aes(fill=continent)) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+## Scatterplot
+And for two quantitative variables, or to assess a relationship, we'd typically want to see a scatterplot.
+
+```{r}
+ggplot(MOM, aes(avg_mass_g, log_mass_g)) + 
+  geom_point()
+
+#change size
+ggplot(MOM, aes(avg_mass_g, log_mass_g)) + 
+  geom_point(aes(size=avg_mass_g))
+
+#add transparency to overlapping points
+ggplot(MOM, aes(avg_mass_g, log_mass_g)) + 
+  geom_point(aes(size=avg_mass_g), alpha=0.5)
+
+#add color and facets
+#change size
+ggplot(MOM, aes(avg_mass_g, log_mass_g)) + 
+  geom_point(aes(size=avg_mass_g, col=order)) + 
+  facet_wrap(~continent)
+```
+
+## Additional information
+
+Geometric object
+* geom_point()
+* geom_line()
+
+Statistical visualization
+* geom_smooth()
+* geom_bar()
+* geom_histogram()
+* geom_boxplot()
+
+Dataset and aesthetic adjustments
+* scale_continuous()
+* scale_manual()
+* lims()
+* labs()
+* guide_legend()
+* theme(), theme_bw(), theme_classic()
+
+Grouping related data
+* [Same Plot] Assign grouping variables as default or layer aes() for: `group`, `color`, or `shape`
+* [Multiple Plots] use `facet_wrap()` or `facet_grid()`
+
+## Remember
+The process of making graphics in ggplot is like painting.  First you lay down the canvas using the ggplot function.  Then you add different layers to that canvas by specifying how you want the data to look and what you want the labels to state using the geoms (for example geom_point or geom_histogram) or facets (facet_wrap) or other layers shown above. 
+
+The best way to build up to more complex plots is to start by just adding one layer at a time, run the code, and make sure it works they way you expected. If it looks good, try to add your next layer or your next grouping (maybe color or facet). Run again and check that it worked. Especially when you are first starting, do not try to write a long command with many layers all at once. Just try one step at a time, and slowly build.
+
