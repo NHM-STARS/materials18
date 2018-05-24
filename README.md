@@ -12,7 +12,7 @@ Before arriving at the workshop please ensure that you have the latest versions 
 
 inside the console of your Rstudio (paste this at the `>` prompt). This should install any missing packages. After installating, rerun this and if all packages are up to date, you shouldn't see any other message. Please email the instructors if you run into any issues. We can also help when you arrive on Day 1 but it would be best to have these issues beforehand so we can hit the ground running.
 
-# Course timetable
+# 📆 Course timetable
 
 - Morning sessions run from 9.30am to 1pm.
 - Afternoon sessions run from 2pm to 5.30pm.
@@ -40,7 +40,7 @@ inside the console of your Rstudio (paste this at the `>` prompt). This should i
 ## Day 4: Reproducibility
 
 - Reproducible workflows
-- Functions, tidy code and literate programming in R  
+- Functions, tidy code, and literate programming in R  
 - Reproducible reports with RMarkdown
 - More advanced gitting
 - Data and code archiving
