@@ -2,6 +2,15 @@
 
 Repository containing materials and useful links associated with the course.
 
+### ⬇️ Installation instructions
+
+Before arriving at the workshop please ensure that you have the latest versions of R and Rstudio for your operating system. You will also need to have a bunch of packages for various lessons. The easiest way to do this is by running:
+
+```r
+ source('https://raw.githubusercontent.com/NHM-STARS/materials18/master/setup.R')
+```
+
+inside the console of your Rstudio (paste this at the `>` prompt). This should install any missing packages. After installating, rerun this and if all packages are up to date, you shouldn't see any other message. Please email the instructors if you run into any issues. We can also help when you arrive on Day 1 but it would be best to have these issues beforehand so we can hit the ground running.
 
 # Course timetable
 
