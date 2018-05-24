@@ -234,6 +234,7 @@ ggplot(MOM, aes(avg_mass_g, log_mass_g)) +
 ## Try experimenting with your own plots
 ```{r}
 starwars
+iris 
 
 # histogram
 
