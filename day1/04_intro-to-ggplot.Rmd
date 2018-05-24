@@ -231,6 +231,20 @@ ggplot(MOM, aes(avg_mass_g, log_mass_g)) +
   facet_wrap(~continent)
 ```
 
+## Try experimenting with your own plots
+```{r}
+starwars
+
+# histogram
+
+# boxplot
+
+# barplot
+
+# scatterplot
+
+```
+
 ## Additional information
 
 Geometric object
