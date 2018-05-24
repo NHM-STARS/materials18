@@ -22,8 +22,9 @@ inside the console of your Rstudio (paste this at the `>` prompt). This should i
 
 - Introduction to the course
 - Introduction to R
+	- [Introduction to Rstudio](https://github.com/NHM-STARS/materials18/blob/master/day1/basics_of_rstudio.pdf)
 - The `tidyverse`, data wrangling and tidying in R.
-- Introduction to `ggplot2`
+- Data Visualization with `ggplot2`
 
 ## Day 2
 
