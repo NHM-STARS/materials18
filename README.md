@@ -23,7 +23,7 @@ inside the console of your Rstudio (paste this at the `>` prompt). This should i
 - Introduction to the course
 - Introduction to R
 	- [Introduction to Rstudio (slides)](http://inundata.org/lectures/basics-rstudio/#/) 
-- The `tidyverse`, data wrangling and tidying in R. [introduction to the tidyverse (slides)](http://inundata.org/lectures/tidyr/#/) 
+- The `tidyverse`, data wrangling and tidying in R. [introduction to the tidyverse (slides)](http://inundata.org/lectures/tidyr/#/), [working with dates in R (slides)](http://inundata.org/lectures/lubridate/#/)
 - Data Visualization with `ggplot2`
 
 ## Day 2
