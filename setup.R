@@ -25,7 +25,8 @@ please_install <- function(pkgs, install_fun = install.packages) {
 
 tidytools <- c(
   "tidyverse", "gapminder" ,"covr", "devtools", "rlang", "roxygen2", "testthat",
-  "purrr", "repurrrsive", "rstudioapi", "usethis", "lubridate", "janitor", "nycflights13"
+  "purrr", "repurrrsive", "rstudioapi", "usethis", "lubridate", "janitor", 
+  "HistData" , "nycflights13"
 )
 have <- rownames(installed.packages())
 needed <- setdiff(tidytools, have)
