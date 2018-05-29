@@ -11,4 +11,285 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #Introduction to Git and GitHub
 
+## Learning Objectives
+
+* Define and describe the usefulness of version control
+* Install and use git on a local computer, and with a cloud-based repository (GitHub)
+* Use git and GitHub through R Studio
+* Initiate a new project repository
+* Use and practice the initiate/clone, push, pull procedure for updating a repo
+* Collaborate on GitHub
+* Assign tasks and ask questions on your project using Issues in GitHub
+* Find and fork other people’s repositories to your personal workspace
+* List and use best practices for reproducibility and collaboration on GitHub
+
+####Some additional resources for more practice and reading
+
+* [installation and setup](http://www.datacarpentry.org/semester-biology/computer-setup/)
+* [Software Carpentry git novice](http://swcarpentry.github.io/git-novice/)
+* [Mozilla friendly git intro](http://joeyklee.github.io/friendly-github-intro/)
+
+***
+
+# Get your GitHub username
+
+1. Go to [https://github.com](https://github.com) and make a GitHub username and account.
+
+2. Follow the [instructions for setup](http://www.datacarpentry.org/semester-biology/computer-setup/) to get git on your local computer. 
+
+***
+
+## Why do you need version control?
+
+Version control (GitHub) is like a better Dropbox. It can be your own personal time machine. You can edit files simulataneously and it will (usually) seamlessly merge your changes. It's definitely better than emailing around your files and just hoping that you are working on the most up-to-date file from your collaborators.
+
+Who has a directory on their computer with a bunch of filenames [like this](http://phdcomics.com/comics/archive.php?comicid=1323) or [this](http://phdcomics.com/comics/archive.php?comicid=1531)?
+
+You can get rid of redundant files and clean up your folders by tracking changes to things like data and code in a more manageable way.
+
+**Benefits of version control**
+
+* Track changes (but *better*)
+  + tracks every change ever made in groups called **commits**
+  + every commit stores the full state of your files at that time
+* Never lose anything
+  + Revert or restore to any commit
+  + Easily unbreak your code/data/manuscript
+  + No more file name changes!
+* Collaboration
+  + Work on files simultaneously
+  + Quickly and easily see what changes others have made
+  + Everyone has the most recent version of everything
+  + Assign tasks or leave messages for collaborators
+
+***
+
+## Version Control using git and GitHub
+
+**Setup git on your laptops**
+
+To get started, we need to configure a few things, especially if this is the first time you’ve used it. The next commands will:
+* Our name and email address (use whatever email you linked to your github account)
+* Colorize our output
+* Name our preferred text editor (I recommend nano, but you can set it to your preference)
+* You can always change this later, if you decide you love emacs, vim, or whatever
+* Set these as global settings (i.e. for every project)
+
+On a command line, Git commands are written as git verb, where verb is what we actually want to do.
+
+`$ git config --global user.name "Charles Darwin"`
+
+`$ git config --global user.email "cdarwin@thebeagle"`
+
+`$ git config --global color.ui "auto"`
+
+`$ git config --global core.editor “nano -w”`
+
+*Aside*: As with other keys, when you hit `Return` on your keyboard, your computer encodes this input as a character. Different operating systems use different character(s) to represent the end of a line. (AKA newlines or line breaks.) Because Git uses these characters to compare files, it may cause unexpected issues when editing a file on different machines.
+
+You can change the way Git recognizes and encodes line endings using the `core.autocrlf` command to `git config`. The following settings are recommended:
+
+**On macOS and Linux:**
+`$ git config --global core.autocrlf input`
+
+**And on Windows:**
+`$ git config --global core.autocrlf true`
+
+You can read more about this issue on [this GitHub page](https://help.github.com/articles/dealing-with-line-endings/).
+
+**Remember:** if you forget a git command, you can access the list of commands by using `-h` and access the git manual by using `--help`. Google is pretty great too!
+
+***
+
+###Local: Tracking files for a project that lives on your computer
+We can set up a version controlled repository for a project in 2 ways:
+
+1. We can start by making a folder, or going into a folder on our local machines that holds our files,
+2. Or we can start the repository directly on GitHub
+
+*Has anyone set up local only git tracking? Do you know how we tell git to start “watching” a folder?*
+
+Let’s start out with a short toy example, that we can use to show how version control in git works.
+
+`$ mkdir birdwatching`
+
+`$ cd birdwatching`
+
+
+Then we tell Git to make planets a repository — a place where Git can store versions of our files:
+`$ git init`
+
+
+If we use ls to show the directory’s contents, it appears that nothing has changed:
+`$ ls`
+
+But if we add the `-a` flag to show everything, we can see that Git has created a hidden directory within planets called .git:
+`$ ls -a`
+
+
+`.    ..    .git`
+
+
+Git uses this special sub-directory to store all the information about the project, including all files and sub-directories located within the project’s directory. If we ever delete the `.git` sub-directory, we will lose the project’s history.
+
+We can check that everything is set up correctly by asking Git to tell us the status of our project:
+`$ git status`
+
+
+If you are using a different version of git than I am, then then the exact wording of the output might be slightly different.
+`# On branch master`
+
+`#`
+
+`# Initial commit`
+
+`#`
+
+`nothing to commit (create/copy files and use "git add" to track)`
+
+
+**Places to Create Git Repositories**
+Just like a column in a dataset keeps track of one kind of information, or a paragraph in our writing should be about one main idea, the project folder that we git init to, should contain code, data, or other information on one project. Everything in it should be part of some whole that we are working on. Everything inside the hierarchy of this folder will be tracked, even if it is in sub-folders (sub-directories). Thus, we only need to git init once, at the topmost level of our folder hierarchy. **Do not `git init` inside a folder inside an already tracked repository.** It can be undone, but it is a a pain.
+ 
+**Making and tracking files**
+Drag and drop a file into the folder. (we could also use our text editor to add a file directly in the shell). Now show that it appears!
+
+`$ git status`
+
+Git has noticed the new file, but the “untracked files” message means that git is not yet keeping track of it. The **first time** we add any new file, we need to ask git to keep track of it for us. We do this using git add:
+`$ git add file.csv`
+
+We can check that the right thing happened by checking git status again:
+
+`$ git status`
+
+Git now knows that it’s supposed to keep track of the file, but it hasn’t recorded the changes as a commit yet. To do that, we need to run one more command:
+
+`$ git commit -m “informative, but concise, message on what I this adds”`
+
+**Note**: commit messages should be useful (same as file names, no junk!) and concise (< 50 characters; no one wants to read a paragraph) and should be in present tense.
+
+When we run `git commit`, Git takes everything we have told it to save by using git add and stores a copy permanently inside the special `.git` directory. This permanent copy is called a [commit](http://swcarpentry.github.io/git-novice/reference/#commit) (or [revision](http://swcarpentry.github.io/git-novice/reference/#commit)) and its short identifier is `f22b25e` (Your commit may have another identifier.)
+
+We use the `-m` flag (for “message”) to record a short, descriptive, and specific comment that will help us remember later on what we did and why. If we just run `git commit` without the `-m` option, Git will launch `nano` (or whatever other editor we configured as core.editor) so that we can write a longer message.
+
+`$ git status`
+
+Git tells us everything is up to date. If we want to know what we’ve done recently, we can ask Git to show us the project’s history using:
+ 
+`$ git log`
+
+`$ git log -1`
+
+`$ git log --oneline`
+
+
+`git log` lists all commits made to a repository in reverse chronological order. The listing for each commit includes the commit’s full identifier (which starts with the same characters as the short identifier printed by the git commit command earlier), the commit’s author (this is important for collaboration), when it was created, and the log message Git was given when the commit was created.
+
+
+**How all this works**
+Think of the whole process of tracking your files like staging a photography session. You are taking snapshots of changes over the life of your project. In this metaphor, git add specifies what should appear in that snapshot (put things in the staging area), and git commit then takes the photo, and makes a permanent record of it (as a commit). If you didn’t stage anything, then git may prompt you to use `git commit -a`, or `git commit --all` which is like gathering everyone for the picture. 
+
+**Reverting and time travel**
+We can go back in time, in case we messed something up. That is a lesson for another day. Please ask me if you need this!
+
+***
+
+###Remote: Tracking and collaborating on files!
+This is where things get really exciting! Git allows us to work between 2 repositories, one on our laptop, and one in the cloud. GitHub is where our **master** copy will live, so it can be remotely updated, access, and collaborated on.
+
+
+* So far we’ve worked with a local Git repository.
+* One of the big benefits of version control is easy collaboration.
+* To do this, we synchronize our local changes with a remote repository called origin.
+* Our remote repository is on GitHub.
+  + By far the most popular hosted version control site
+  + Public and private hosted repositories
+  + Private free for students and academics
+  + [https://education.github.com/](https://education.github.com/) 
+
+For example, all of this week's materials are [on GitHub](https://github.com/NHM-STARS/materials18)!
+
+Log into GitHub, and navigate to your profile. There probably isn't much (or anything) in there, if you haven't used git in the past. By default, all new repositories in GitHub are public, unless you have settings that allow you to create private repositories.
+
+Now, click on the tab for “Repositories”. On the right, you should see a green button that says “New”. Create a new repository (folder) named for a project you'd like to work on, or just a hypothetical one. I'll make one called `refried-beans`. This is where everything will go. Remember that it can have subfolders, but this is the top-level folder for your stuff. You cannot have spaces, so you may choose to use 
+
+* CamelCase
+* snake_case
+* Or-dashes
+**Again, names should be short, memorable, and informational.**
+
+Please keep your team’s repository set to private, and click “initialize this repository with a README” and "add a license". Every repository needs a README, and licenses are a good idea. You do not need to worry about `.gitignore` at this point…
+
+**Create a Git repo**
+
+1. Navigate to Github in a web browser and login.
+2. Click the `+` at the upper right corner of the page and choose New repository.
+4. Fill in a `Repository name` that follows good naming practices.
+6. Select `Initialize this repository with a README` and `add a license`.
+7. Click `Create Repository`.
+
+**Project planning and tracking progress on GitHub**
+This is a relatively new functionality in GitHub, but I’m so excited about it!
+
+Previously, “repository” and “project” were used synonymously. Now they are not the same thing! This should help us apply our project management skills to our repository for our project. I’ll try to keep terminology straight…
+
+Inside your repository, check out the Project tab. You can create a new Project Board that is linked to this repository, and you can translate all the tasks from your project bid and timeline, or just add to it week-to-week, to keep track of what coding or data or other tasks your team is working on. I recommend setting it up with the “Kanban (basic)” template, so you can have columns for To Do, In progress, and Done. Alternately, you can fill it up with other names or columns you think would be more helpful. 
+
+
+**Getting your info linked to your laptop, and uploading your files!**
+Go to the `<> Code` tab of your repository. Click on the “clone or download” button and then the “copy to clipboard” button. Go to your terminal and navigate to the place on your laptop that you want your files to live. I do not recommend your Desktop. Try putting them in a Documents folder, or maybe you already have a folder for the things you're working on this week (**not** inside another GitHub folder) or for the project you envision working on.
+
+`$ git clone link`
+
+Now you have it, and you can do the regular process of editing files on your computer. Dragging and dropping them into here, then using `git add`, `git commit`, `git push`, etc. to update the cloud. Note that when collaborating, it is **important** to `git pull` before you `git push`. The majority of errors happen during this process, because someone else has been working and made changes in the meantime. In theory, this happens seamlessly, but sometimes you’ll get a merge conflict. If you do, it’s OK, follow the instructions and try to tell the computer what you want it to do.
+
+**Note: DO NOT** git init. When you clone a repository it is already being tracked. 
+
+
+**Push to a remote**
+* `Push` sends your recent commits to the `origin` remote.
+* Before a `Push` your commits show in your local history but not on the remote.
+* To `Push` to your remote, type `git push` in the terminal.
+* Now your changes and commit history are also stored on the remote.
+
+
+**Challenge:** 
+Add a file (or a few!) to your repository, or edit the README file. In other words, make some sort of change. Add and commit your changes, then push those changes up to the origin on GitHub. Check your git status and git log to see that it worked, and check GitHub to see your changes there. 
+
+Green stickies up when you’re finished, Pink up if you hit a snag!
+
+**Collaborating** 
+So far, we've still just been working on our own. GitHub is **AMAZING** for collaboration and sharing!
+
+* Big advantage to remotes is easy collaboration
+* Avoids emailing files and shared folders where you are never sure if you actually have the most recent version
+* Makes it easy to see what collaborators have done
+* Automatically combines non-overlapping changes
+
+**In groups of 3-4**
+1. Identify 1 person who is willing to share their repository. 
+2. While the others watch and follow along, that person should navigate to `Settings -> Collaborators` and add each of the other usernames to the repository. This will allow anyone in the list to make changes to the repository directly.
+3. Now, each of the newly added users should navigate to the repository and git clone it to their local machines. 
+4. Everyone should make 1-2 changes locally (add or edit files), and then try to push them back up to the remote. What happened? Remember to `git pull` before you `git push`.
+5. Try `git diff` on a file to see what changed.
+6. Check the version on GitHub to see how these changes have been tracked. Did you run into anything unexpected?
+7. Click on the "Insights" tab of GitHub. What do you notice?
+
+**Issues tab**
+When you are collaborating, it can be useful to leave messages or assign tasks to users. 
+1. Find the issues tab and explore what it could be used for. 
+2. Each person should make 1-2 issues. Assign one of the other users to your issue. What could help these be maximally useful?
+3. Do you think issues or the project board would be more useful for your own work?
+
+***
+
+### Version Control using R Studio
+So we've looked at how to track our changes locally and remotely, using the terminal and the GitHub.com interfaces. Since we are learning RStudio this week, you **can** also track your code changes directly in RStudio as you are working!
+
+
+
+
+
+
 #Hooray!
