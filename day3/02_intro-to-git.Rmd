@@ -28,6 +28,15 @@ knitr::opts_chunk$set(echo = TRUE)
 * [installation and setup](http://www.datacarpentry.org/semester-biology/computer-setup/)
 * [Software Carpentry git novice](http://swcarpentry.github.io/git-novice/)
 * [Mozilla friendly git intro](http://joeyklee.github.io/friendly-github-intro/)
+* [Getting started with GitHub](http://jennybc.github.io/2014-05-12-ubc/ubc-r/session2.4_github.html)
+* [Karl Broman Github lecture slides](http://kbroman.org/Tools4RR/assets/lectures/04_git_withnotes.pdf)
+* [Handout from 2017 NHM Workshop](https://nhm-stars.github.io/materials/day04/collab_gh_intro.html)
+
+#### Published papers about git and GitHub as scientific tools
+* [Git can facilitate greater reproducibility...](https://scfbm.biomedcentral.com/articles/10.1186/1751-0473-8-7)
+* [Ten simple rules for taking advantage of Git and GitHub](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4945047/)
+* [Good enough practices in scientific computing](https://arxiv.org/abs/1609.00037)
+*
 
 ***
 
@@ -287,9 +296,100 @@ When you are collaborating, it can be useful to leave messages or assign tasks t
 ### Version Control using R Studio
 So we've looked at how to track our changes locally and remotely, using the terminal and the GitHub.com interfaces. Since we are learning RStudio this week, you **can** also track your code changes directly in RStudio as you are working!
 
+**Connect to the Git repo in RStudio**
+1. From new GitHub repository, click green `Clone` or download button -> Click the `Copy to clipboard` button.
+2. In RStudio, `File -> New Project -> Version Control -> Git`
+3. Paste copied URL in `Repository URL`:
+4. Leave `Project directory name:` blank; automatically given repo name.
+5. Choose where to `Create project as subdirectory of:`.
+6. Click `Create Project`.
+7. Check to make sure you have a `Git` tab in the upper right window.
+
+**OR, if you want to start a new project and start tracking it…**
+1. Go to Tools → Version Control → Project Setup
+2. Toggle to Git
+3. This might just track locally though?
+
+**OR you can link to an existing directory, to keep tracking your changes via RStudio**
 
 
+**First Commits**
+* Download the data file Plummer_JUrbanEcol_2016_light_composition_dataset.csv from [Zenodo](https://zenodo.org/record/56453#.Ww2W_Y4-CGi) to your project directory. This data is about moth species composition and influence to urban lighting sources.
+* Git -> Select Plummer_JUrbanEcol_2016_light_composition_dataset.csv. 
+* Commit with message.
+  + Add description of my data
+* History:
+  + One commit
+  + Changes too large to see
+  
+**Commit R script**
+* Read in data to new R script
+
+`moth_data <- read.csv("Plummer_JUrbanEcol_2016_light_composition_dataset.csv")`
+
+* Save as `moth-analysis.R`
+* Git -> Select `moth-analysis.R`
+  + Changes in staged files will be included in next commit
+  + Can also see changes by selecting `Diff`
+* Commit with a useful and informative (but brief!) message
+  + Start script by importing data and comparing abudnance and species richness.
+* History
+  + 2 commits
+  + See what changes were made to moth-analysis.R
+  
+**Building a history**
+* Now, you won't see `moth-analysis.R` on the `Git` tab
+  + this is because there are no more changes since the last saved commit
+* Add some more code
+  + create a new categorical lamp distance column
+  
+`moth_data <- moth_data %>% mutate(lamp_cat = ifelse(lamp_dist > 35, "far", near))`
+  
+* Save `moth_analysis.R`
+* Now it shows up on the `git` tab (the same way it would otherwise show up in `git status` in the terminal)
+  + `M` indicates it's been modified
+* To commit these changes we need to stage the file
+  + Check the box next to `moth_analysis.R`
+* Commit with message
+  + "Add categorical lamp distance column"
+* History
+  + 3 commits!
+  + Each of the `moth-analysis.R` commmits shows the additions we made in that commit.
+* Modify this code in the file
+  + Change the category cut-off size 
+
+`moth_data <- moth_data %>% mutate(lamp_cat = ifelse(lamp_dist > 30, "far", near))`
+
+* Save file -> stage -> commit
+  + "Change size cutoff for new column"
+  + Green sections now show for added lines, red for deleted
+  + Git works line by line.
+  + The previous version of the line is shown as deleted, the new version of the line is shown as added.
+  
+** Experiment some more yourself!**
+Try some of the changes, or add your own. After each new "chunk" that you do, commit your changes to git.
+1. Practice your new ggplot knowledge, and add a few new lines of code to plot the relationship of abundance to species richness.
+2. Add a plot to see how abundance or species richness has changed through time.
+3. Your supervisor is particularly interested in locations with [Blastobasidae](https://en.wikipedia.org/wiki/Blastobasidae), a family of drab, inconspicuous moths. Create a new version of the dataset that only includes surveys where at least 1 moth of the genus `blastobasidae` was observed.
+4. Add clear comments and annotations to your code file.
+
+** Git as a time machine **
+
+Experiment at will!
+* make changes to your files
+* save and show changes are staged
+* (Settings) More -> Revert -> Yes
+* Get previous state of a file
+  + History -> Select commit -> View file @ ...
+  
+Delete at will! Make mistakes!
+* Close the upper left window with the `moth-analysis.R`
+* Choose the file tab in the lower right window
+* Select `moth-analysis.R` -> Delete -> Yes
+* Stage deleted file -> (Settings) More -> Revert -> Yes
+
+###Forking a repository
+This is how you can get someone else's repository (this, pull requests, and reversions to be covered later)
 
 
-
-#Hooray!
+#Hooray for version control!
