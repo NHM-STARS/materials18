@@ -18,9 +18,9 @@ knitr::opts_chunk$set(echo = TRUE)
 * List and identify different methods of collecting data
 * Clean and wrangle data in R, using tools from the tidyverse
 
-**There is a presentation which goes with this handout, use it to add notes if you need to.**
+**[The Awesome NHM-STARS 2017 Handout] (https://nhm-stars.github.io/materials/day01/RDM_intro.html)**
 
-Some additional resources for more practice and reading
+####Some additional resources for more practice and reading
 
 * [Data entry](http://www.datacarpentry.org/semester-biology/materials/data-entry/)
 * [Tidy data](http://www.datacarpentry.org/semester-biology/materials/tidy-data/) 
@@ -35,6 +35,8 @@ Some additional resources for more practice and reading
 Whether we are working with our own data, or someone else's, **data** is the starting point for running an analysis in R. So it pays to take a step back and really think about what data is, what kinds of data exist, how data is collected, and how we can structure it. Knowing about these things can help you look at a dataset in the "wild" and begin to make decisions about what you will need to do to wrangle it in R and what options you will have in the statistical analysis or modeling phase of your project.
 
 A lot of real data isn't very tidy, mostly because scientists or workers asked to collect data to answer a question simply aren't taught about how to structure their data in a way that is easy to analyze.
+
+***
 
 The main goal of tidy data is making it easy for a computer to work with the data. Let's start by looking at some messy data and thinking about what makes it messy and what we could do to improve it.
 
@@ -117,4 +119,5 @@ MS Excel has 2 different date origins, which it uses to store dates (11/14/56) a
 
 ***
 
+See [handout](https://nhm-stars.github.io/materials/day01/RDM_intro.html) for more advice on data management and organizing your own file structure system.
 
