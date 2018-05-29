@@ -36,3 +36,10 @@ glimpse(surveys)
 * does missing data make the data messy?
 * what would be our first steps to cleaning up this data for analysis?
 
+***
+Build some fairly open-ended tasks to build on things we've learned for:
+
+* data exploration (summary, glimpse, range, unique, etc.)
+* data visualization (ggplot)
+* data wrangling (dplyr)
+
