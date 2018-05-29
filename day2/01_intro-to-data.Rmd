@@ -118,6 +118,13 @@ MS Excel has 2 different date origins, which it uses to store dates (11/14/56) a
 [Dates in Excel](https://datapub.cdlib.org/2014/04/10/abandon-all-hope-ye-who-enter-dates-in-excel/) 
 
 ***
+##QA/QC
+
+**Quality Assurance** Enter the data in a way that ensures that the data is good, or within certain specifications, before we get to analysis. If you enter data in an excel spreadsheet, for example, you can use Data Validation to set limitations or add error messages for someone entering data.
+
+**Quality Control** Cechking to ensure there is no inaccurate, bad, or misleading data in our data that has already been entered. One way to do this quickly is to conduct a few "sanity" checks when you first bring in a dataset in R. For example, if I've collected heights of annual grasses in a prarie, I can make sure that none of the measurements in above what I believe my maximum should be, or that they are distributed within a realistic range of values. Or I could check which species were recorded, and do a quick check for typos or something misidentified that I don't believe would be found there.
+
+***
 
 See [handout](https://nhm-stars.github.io/materials/day01/RDM_intro.html) for more advice on data management and organizing your own file structure system.
 
