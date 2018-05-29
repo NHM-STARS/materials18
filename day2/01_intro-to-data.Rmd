@@ -9,39 +9,136 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Learning Objectives
+* Be able to look at a dataset and identify the key parts (e.g., rows, columns, missing data)
+* Identify characteristics that make data "messy" vs "tidy"
+* Be able to list several rules of thumb for tidy data and improved data collection
+* Come up with solutions for "fixing" a messy dataset
+* List and identify different types of data
+* List and identify different methods of collecting data
+* Clean and wrangle data in R, using tools from the tidyverse
 
 **There is a presentation which goes with this handout, use it to add notes if you need to.**
 
-Before we start, remember we need to do a couple of things...
+Some additional resources for more practice and reading
 
+* [Data entry](http://www.datacarpentry.org/semester-biology/materials/data-entry/)
+* [Tidy data](http://www.datacarpentry.org/semester-biology/materials/tidy-data/) 
+* [Data organization](http://kbroman.org/dataorg/)
+* [Data ONE QAQC](https://www.dataone.org/sites/all/documents/education-modules/handouts/L05_DataQualityAssurance_Handout.pdf)
+* [Data ONE data entry](https://www.dataone.org/sites/all/documents/education-modules/handouts/L04_DataEntry_Handout.pdf)
+* [Data ONE data management](https://www.dataone.org/sites/all/documents/education-modules/handouts/L01_DataManagement_Handout.pdf)
+* [Data ONE data management plan](https://www.dataone.org/sites/all/documents/education-modules/handouts/L03_DataManagement_Handout.pdf)
+
+***
+
+Whether we are working with our own data, or someone else's, **data** is the starting point for running an analysis in R. So it pays to take a step back and really think about what data is, what kinds of data exist, how data is collected, and how we can structure it. Knowing about these things can help you look at a dataset in the "wild" and begin to make decisions about what you will need to do to wrangle it in R and what options you will have in the statistical analysis or modeling phase of your project.
+
+A lot of real data isn't very tidy, mostly because scientists or workers asked to collect data to answer a question simply aren't taught about how to structure their data in a way that is easy to analyze.
+
+The main goal of tidy data is making it easy for a computer to work with the data. Let's start by looking at some messy data and thinking about what makes it messy and what we could do to improve it.
+
+## Portal Project Dataset
+
+We are going to look at an example of some data collected at a real field study, on the long-term ecological species interactions of small mammals in the Chihuahuan Desert in southeastern Arizona (I actually collected data at this site, and helped manage it from 2007-2013). 
+
+Each month, researchers travel to the site, set traps to catch rodent (like kangaroo rats) on experimental plots, and weigh them. Knowing something about their weights helps ecologists estimate how much food resources (plants) are being used by the rodent “community” at a given time, and how the resources are being divided up among different species.
+
+[download the data](https://ndownloader.figshare.com/files/2252083)
+
+Then open it in excel.
+
+Some of you may have more experience looking at datasets, and we haven’t discussed any “rules” of datasets as a class yet, but let’s start by just looking at this together, and thinking about what looks good, and what doesn’t. You can see that there is a tab for the data collected in 2013 and in 2014, and tab called dates.
+ 
+*** 
+ 
+*(2 minutes)*
+Look at the data on your own.
+
+1. What do you think the data represents? 
+2. What is in the columns? Rows? 
+3. Is there anything that looks confusing to you? 
+4. What do you think could be improved?
+
+*(5-7 minutes)*
+Discuss with a partner:
+
+1. Describe 5 things about this data that is not tidy. How do you think you could fix each of these issues?
+2. If you wanted to put this data together into a database, or a single file for 2013 and 2014 together, could you easily do that in its current form? Would it be difficult to add data for later years?
+3. Do you think it’s a good idea to enter data like this and clean it up later, or to have a good data structure for analysis by the time data is being entered? Why?
+
+*(5-10 minutes)*
+Discuss.
+Volunteer items from your lists. What would you improve and how would you fix them?
+Talk through anything that can be improved about their answers.
+Let's start making a list about the things we are noticing. 
+
+### General rules for data
+1. Be consistent
+2. Make it a rectangle
+3. One row for each
+4. One column per type of information
+5. Every cell contains one value
+6. Minimize redundancy using multiple tables
+7. Don’t use colors, fonts, or anything purely visual as data
+8. Use good null values (not -999, blanks good, some prefer NA etc. but language specific)
+9. Save data in plain text files
+10. Use good names
+
+***
+
+Now that we have these “rules”, it should help us think more clearly about how we (or others) collect data. So let’s say we wanted to collect this same kind of data at a new site, here in the UK. But this time, let’s avoid making the same mistakes. 
+
+We need to decide where and how we will record data. There are lots of valid options, here are a few examples:
+
+* Spreadsheet (excel)
+* Text file (.txt)
+* Database (e.g., Access, SQL)
+* Form (web or GUI databases)
+
+*Why might we choose one of these over another?*
+
+* Spreadsheets or text files are really common, and sometimes are considered “flat files”, as they should be one sheet (not multiple tabs).
+* Databases are one way to store more complex data, where you can avoid recording repetitive information, but can easily refer a row of data to additional details (e.g. on the site, personal details, etc.). 
+* A web form could be useful if you really want to control the way data is entered (e.g. multiple choice options like in the pre-survey I gave you the other day), or make it easy for a novice data collector to see what should be recorded.
+
+When used properly, spreadsheets, databases, or forms can provide additional protection against bad data being entered (e.g. in my form, I provided options for operating system, instead of just asking you to “fill it in”). 
+
+**Aside**: Why would “fill in the blank” for data potentially be problematic, if I wanted to analyze how many students were using each type of operating system? Or collect data on different plant species occurring on green rooftops?
+
+Be careful of data conversion issues from spreadsheets. Be aware that it happens; dates in particular can be problematic, or using data from formulas. If spreadsheets contain visual data (e.g. color, highlighting, etc). That can also be lost once you bring it into your program.
+
+Show some examples of when/why data conversion can be a problem in real research:
+
+MS Excel auto-converting gene symbols (short names) to floating point number or dates: [Genome Biology](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-1044-7) 
+
+MS Excel has 2 different date origins, which it uses to store dates (11/14/56) as floating points:
+[Dates in Excel](https://datapub.cdlib.org/2014/04/10/abandon-all-hope-ye-who-enter-dates-in-excel/) 
+
+***
+### Portal Project Dataset 2.0
+Now that we've thought about some general data rules and pitfalls, let's look at another version of the Portal dataset, but let's pull it into R this time.
+
+[Access the Portal Teaching Dataset](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459)
 
 #### 1. Tell R where your data are
-See the introduction handout if you can't remember how.
-
-Check it worked using:
-```{r}
-list.files()
-```
-or look at the Files tab
-
-#### 2. Load the packages needed
-If you downloaded the entire "tidyverse" then you should already have the ggplot2 package. If not, then you will need to get it using "install.packages"
 ```{r}
 library(tidyverse)
-library(ggplot2)
+surveys <- read_csv("example_data/surveys.csv")
 ```
 
-#### 3. Import the data
-First we are going to work with the dataset `MOMv3.3.txt`, which contains the body mass of all mammals on Earth (MOM = Masses Of Mammals). You can find the original source by Smith et al. 2003, [here](http://esapubs.org/archive/ecol/E084/094/)
-```{r}
-
-```
 
 #### 4. Look at the data
 ```{r}
-
+glimpse(surveys)
 ```
 
-### What do I need to know about my data? How can that help me code? Work a project?
+### Is this data tidy? 
+(10 minutes)
+
+* what do the columns and rows represent?
+* how do you feel about the way date is recorded? Why?
+* does missing data make the data messy?
+* what would be our first steps to cleaning up this data for analysis?
 
 
