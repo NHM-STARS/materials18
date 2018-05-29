@@ -42,7 +42,7 @@ usethis::use_course("https://www.dropbox.com/s/izppxfb2frz43op/nhm18.zip?dl=0")
 ## 📈 Day 2
 
 - Data hygiene
-- More data wrangling and tidying in R
+- [More data wrangling and tidying in R (slides)](http://inundata.org/lectures/more-tidying/#/)
 - More data visualisation in R with `ggplot2`
 
 ## 🌍 Day 3
