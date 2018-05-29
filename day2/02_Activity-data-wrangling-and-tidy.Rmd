@@ -20,10 +20,10 @@ Now that we've thought about some general data rules and pitfalls, let's look at
 ```{r}
 library(tidyverse)
 surveys <- read_csv("example_data/surveys.csv")
+species <- read_csv("example_data/species.csv")
 ```
 
-
-#### 4. Look at the data
+#### 2. Look at the data
 ```{r}
 glimpse(surveys)
 ```
@@ -37,9 +37,37 @@ glimpse(surveys)
 * what would be our first steps to cleaning up this data for analysis?
 
 ***
-Build some fairly open-ended tasks to build on things we've learned for:
+Let's try some open-ended tasks to build on things we've learned so far:
 
-* data exploration (summary, glimpse, range, unique, etc.)
-* data visualization (ggplot)
-* data wrangling (dplyr)
+### data exploration (summary, glimpse, range, unique, etc.)
+
+1. How many species are represented?
+2. What years was the site surveyed?
+3. What is the range of weights? hindfoot lengths?
+4. What is the average weight? hindfoot length?
+
+### data visualization 1.0 (ggplot)
+
+1. Is weight correlated with hindfoot length?
+2. Look at a distribution of the weights by each species separately.
+
+### data wrangling (dplyr)
+
+1. Keep only the rodent species.
+2. Make a second table that counts the number of species captured at the site in each year. 
+3. Make a third table that summarizes the number of individuals of each species captured in each year on each plot and their average weights.
+4. Make a fourth table that only keeps complete records (no missing values)
+5. The species "PB" stands for *Perognathus baileyi* which is now in the genus *Chaetodipus* (also true for "PP", *Perognathus penicillatus*. Change the species codes from "PB" to "CB" and "PP" to "CP". 
+6. Remove records where the individual was identified only to genus.
+7. In the actual dataset, *Neotoma albigula* is identified as NA. Why do you think it was changed to NL here? Could you change it back to NA? Why or why not?
+
+### data visualization 2.0 (ggplot)
+
+1. Which rodent species have been captured most frequently?
+2. Has the number of species at the site changed through time?
+3. Has average weight changed through time?
+4. Are the average weights different for males of females of each species?
+
+### What else would you like to look at in this dataset? Explore!
+
 
