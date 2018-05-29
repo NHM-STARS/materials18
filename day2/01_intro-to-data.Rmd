@@ -116,29 +116,5 @@ MS Excel has 2 different date origins, which it uses to store dates (11/14/56) a
 [Dates in Excel](https://datapub.cdlib.org/2014/04/10/abandon-all-hope-ye-who-enter-dates-in-excel/) 
 
 ***
-### Portal Project Dataset 2.0
-Now that we've thought about some general data rules and pitfalls, let's look at another version of the Portal dataset, but let's pull it into R this time.
-
-[Access the Portal Teaching Dataset](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459)
-
-#### 1. Tell R where your data are
-```{r}
-library(tidyverse)
-surveys <- read_csv("example_data/surveys.csv")
-```
-
-
-#### 4. Look at the data
-```{r}
-glimpse(surveys)
-```
-
-### Is this data tidy? 
-(10 minutes)
-
-* what do the columns and rows represent?
-* how do you feel about the way date is recorded? Why?
-* does missing data make the data messy?
-* what would be our first steps to cleaning up this data for analysis?
 
 
