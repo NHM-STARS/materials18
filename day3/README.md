@@ -8,6 +8,9 @@
 > `.Rmd` and `.html` files are for reference only, and we will explain what `.Rmd` files are later in the course. 
 
 - Git and GitHub through RStudio and the terminal
+    - `Rmd` and `html` versions of the exercises
+    -datasets for the exercises in the `data-for-github/` folder
+    -**Everyone** will need to make a GitHub account and username
 
 - Making maps with `ggmap` and `leaflet`
 
