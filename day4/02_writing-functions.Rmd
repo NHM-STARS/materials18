@@ -9,12 +9,220 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# So you want to write your own function...
+#Introduction to writing functions
 
-# Why would I want to write my own function?
+## Learning Objectives
 
-# How do I know I should write a function?
+* Write your own function to automate a task
+* Be able to read and interpret functions that another person wrote
+* Use conditional statements to set constraints on how your function operates
+* Write a piece of code that chains together these operations to perform a repetitive task on a large dataset. Code should be properly structured and annotated
 
-# How do I get started writing a function?
+####Some additional resources for more practice and reading
+
+* [Data Carpentry on Functions](http://www.datacarpentry.org/semester-biology/materials/functions-R/)
+* [R for Data Science](http://r4ds.had.co.nz/functions.html)
+
+***
+
+## A quick review on writing understandable, useable, and reproducible code...
+
+* Write code in understandable chunks
+  + Clear variable names
+  + Consistent indentation and line spacing
+  + Good commenting
+  + Functions
+  
+* Write reusable code
+  + concise and modular script
+  + functions with general structure
+  
+** What does it mean to write "modular" code in understandable chunks?
+* The human brain can only hold ~7 items in memory
+  + Write programs or functions that don't require remembering more than that at once.
+* Functions work because they reduce something complicated into a single conceptual chunk
+  + for example, sum(1:5) --> don't need to remember all the details about *how* or *why* it works, only what a sum is, and what you want to sum up.
+  
+## Writing a Function
+
+**Question:** When should I write a function?
+**Answer:** Anytime you want to copy and paste a block of code more than twice!
+
+**Reuse**, don't **repeat** code.
+* inefficient to copy code
+* if you have to change it in more than one place, it will eventually be wrong somewhere.
+* functions are written to be reusable
+
+To create a function you will need **3 things**:
+1. A name for your function
+2. A list of inputs
+3. Code that tells the function what to do
+
+```{r}
+function_name <- function(inputs) {
+  output_value <- do_something(inputs)
+  return(output_value)
+}
+```
+
+Let’s say we have a dataset of watermelon measurements and we need to calculate the volume of the watermelons in order to determine who wins the largest watermelon contest. Watermelons aren’t exactly spherical, but they are often ellipsoids. We hired a bunch of agricultural students to measure the different diameters of the watermelons for us… Since ellipsoid volume is not a function that exists in base R, but we know that volume is `4/3 * pi * r2`, we don’t want to have to type this every time that we calculate the volume. Let’s create our own function to automate this task, and save typing, and reduce the likelihood of errors!
+
+```{r}
+calc_watermelon_vol <- function(x_radius, y_radius, z_radius) {
+  volume <- 4/3 * pi * x_radius * y_radius * z_radius
+  return(volume)
+}
+```
+
+* creating a function doesn't run it
+* call the function with some arguments
+
+`calc_watermelon_vol(20, 10, 13)`
+`wm_vol <- calc_watermelon_vol(20, 10, 13)`
+
+### So what happens when we execute the function we just wrote?
+1. Call function
+2. Assign 20 to x_radius, 10 to y_radius, and 13 to z_radius
+3. Calculate volume
+4. Send the volume back as output
+5. Store it in wm_vol
+
+***
+
+**You try**
+Write a function that converts pounds to grams (1 lb = 453.592 g). It should take a value in pounds as the input and return the equivalent value in grams.
+
+```{r}
+pounds2grams <- function(pounds) {
+  grams <- pounds * 453.592
+  return(grams)
+}
+```
+
+***
+
+You should treat functions like a black box. You can't directly get to anything inside that box.
+* Can't access a variable that was created in a function
+  + if you type "grams" it will tell you "not found"
+
+"Global" variables can influence a function, but you should avoid this. It can be confusing and error prone to use a variable that isn't passed into an argument. 
+
+**Don't do this**
+```{r}
+x_radius <- 12
+y_radius <- 8
+z_radius <- 9
+
+calc_watermelon_vol <- function( ) {
+  volume <- 4/3 * pi * x_radius * y_radius * z_radius
+  return(volume)
+}
+```
+
+**Defaults can be set for common inputs**
+* This is how functions we are used to seeing work! 
+* Take a moment to look carefully at the documentation for some common functions (e.g., read_csv) and see if you can identify the defaults.
+
+```{r}
+calc_watermelon_vol <- function(x_radius=15, y_radius=7.5, z_radius=10) {
+  volume <- 4/3 * pi * x_radius * y_radius * z_radius
+  return(volume)
+}
+
+
+calc_watermelon_vol()
+calc_watermelon_vol(y_radius = 9)
+calc_watermelon_vol(20, 10, 13)
+calc_watermelon_vol(x_radius = 20, y_radius = 10, z_radius = 13)
+```
+
+***
+
+(5-15 minutes)
+**You try**
+The length of an organism is typically strongly correlated with its body mass. This is useful because it allows us to estimate the mass of an organism even if we only know its length. This relationship generally takes the form:
+
+`Mass = a * Length^b`
+
+Where the parameters a and b vary among groups. This allometric approach is regularly used to estimate the mass of dinosaurs since we cannot weigh something that is only preserved as bones.
+
+The following function estimates the mass of an organism in kg based on it’s length in meters for a particular set of parameter values, those for Theropoda (where a has been estimated as 0.73 and b has been estimated as 3.63; [Seebacher 2001] (http://www.jstor.org/stable/4524171?seq=5#page_scan_tab_contents)).
+
+```{r}
+get_mass_from_length_theropoda <- function(length){
+  mass <- 0.73 * length ** 3.63
+  return(mass)
+}
+```
+
+1. Add a comment to this function so that you know what it does.
+2. Use this function to print out the mass of a Spinosaurus that is 16 m long based on it’s reassembled skeleton. Spinosaurus is a predator that is bigger, and therefore, by definition, cooler, than that stupid Tyrannosaurus that everyone likes so much.
+3. Create a new version of this function called `get_mass_from_length()` that estimates the mass of an organism in kg based on it’s length in meters by taking length, a, and b as parameters. To be clear we want to pass the function all 3 values that it needs to estimate a mass as parameters. This makes it much easier to reuse for all of the non-theropod species. Use this new function to estimate the mass of a Sauropoda (a = 214.44, b = 1.46) that is 26 m long.
+
+***
+
+*Do you think it is more useful to pass a and b in as parameters, or to have them fixed?*
+
+### Nesting functions
+
+Finally, just like any of the functions that come native to R, (like mean, sd, round, etc.), we can put one function inside another function, to do multiple things at once! So being able to write your own functions can be really powerful, because it allows you to execute a specific task!
+
+**Combining functions**
+* Each function should be a single conceptual chunk of code
+* Functions can be combined to do larger tasks in 2 ways 
+* calling multiple functions in a row
+
+```{r}
+est_watermelon_mass <- function(volume){
+# mass in kg from volume in cubic cm
+  mass <- 0.0049 * volume
+}
+
+wm_mass <- est_watermelon_mass(calc_watermelon_vol(20, 10, 13))
+
+library(dplyr)
+wm_mass <- calc_watermelon_vol(20, 10, 13) %>%
+  est_watermelon_mass()
+```
+
+* Calling functions from inside other functions
+* Allows organizing function calls into logical groups
+
+```{r}
+est_watermelon_mass_dim <- function(length, width, height){
+  volume = calc_watermelon_vol(length, width, height)
+  mass <- est_watermelon_mass(volume)
+  return(mass)
+}
+
+est_watermelon_mass_dim(20, 10, 13)
+```
+
+***
+
+(5-15 mins)
+**You try**
+
+1. Measuring things using the metric system is the standard approach for scientists, but when communicating your results more broadly it may be useful to use different units (at least in some countries). Write a function that converts kilograms into pounds (2.205 lbs = 1 kg). Use that function along with your dinosaur mass function from to estimate the weight, in pounds, of a 12 m long Stegosaurus (12 m is about as big as they come and nothing gets folks excited like a giant dinosaur). In Stegosauria, a has been estimated as 10.95 and b has been estimated as 2.64 ([Seebacher 2001] (http://www.jstor.org/stable/4524171?seq=5#page_scan_tab_contents)).
+
+
+2. **Super Challenge.** Seebacher's paper published the parameters for mass conversion for each of the major taxnomic groups of dinosaurs.
+
+Taxa    | a   | b | R2
+-----|-----|-----|-----
+Ankylosauria  | 16.54 | 2.51 | 0.54
+Ceratopsia | 12.58 | 2.90 | 0.98
+Ornithopoda | 11.81 | 2.66 | 0.99
+Prosauropoda | 12.32 | 2.40 | 0.99
+Sauropoda | 214.44 | 1.46 | 0.86
+Stegosauria | 10.95 | 2.64 | 0.59
+Theropoda | 0.73 | 3.63 | 0.98
+
+Write a function that will read in the dino_collection.csv file, wrangle it, use the functions to estimate mass in both kilograms and in pounds, based on the specimen's taxa, and add new columns with this information to the data table. Plot the dinosaur masses by body length, and color the points by taxa. What is the heaviest dinosaur? The lightest?
+
+
+
 
 # What are best practices for writing a function?
+
+
