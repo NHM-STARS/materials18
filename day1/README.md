@@ -13,3 +13,6 @@
 - The `tidyverse`, data wrangling and tidying in R.
 
 - Introduction to `ggplot2`
+    - `Rmd` and `html` versions of the exercises are available on GitHub
+    - Masses of Mammals `MOMv3.3.txt` dataset is available in the day1 folder
+    
