@@ -34,6 +34,7 @@ Suggested
     - Without guidance, can you understand the code? Do you have any suggestions for them, to help better annotate it, to simplify it, or to follow clearer style guidelines?
     - Take turns discussing or reading aloud each other's code, and inserting edits or suggestions where you agree on them. 
     - (advanced, optional) Push your code and data up to GitHub (if it is OK to be public!) and file suggestions as "issues" or "pull requests"
+    - [Rubber duck debugging](https://en.m.wikipedia.org/wiki/Rubber_duck_debugging)
 
 - Sharing your battle scars and victories
     - Take turns presenting to the whole group what you were able to create during the day
