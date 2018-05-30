@@ -3,7 +3,9 @@
 - Reproducible workflows
 ![alt text](https://github.com/NHM-STARS/materials18/raw/master/day4/workflow.png "BES Workflow")
 
-- Functions, tidy code and literate programming in R  
+- Functions, tidy code and literate programming in R
+    - `Rmd` for functions lesson
+    - The example dataset, `dino_collection.csv`, can be found in the `example_data` folder
 
 - Reproducible reports with RMarkdown
 
