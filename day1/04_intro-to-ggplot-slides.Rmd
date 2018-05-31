@@ -1,0 +1,61 @@
+---
+title: "intro-ggplot2"
+author: "Sarah Supp"
+date: "5/31/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(tidyverse)
+library(naniar)
+
+MOM <- read_tsv("MOMv3.3.txt", col_names=F)
+names(MOM) <- c("continent", "status", "order", "family", "genus", "species", "log_mass_g", "avg_mass_g", "reference")
+MOM <- MOM %>%
+  replace_with_na(replace = list(avg_mass_g = -999, log_mass_g = -999.00))
+```
+
+## Challenge 1
+Make a boxplot like the one we just did, but try adding layers for axis labels, color, or to compare different categories (`facet_wrap` or change the x-variable). 
+```{r, warning=FALSE}
+ggplot(MOM, aes(x = continent, y = log_mass_g)) + 
+  geom_boxplot()
+```
+
+
+## Challenge 2
+Can you create the plot shown below? 
+(Hint: if you have imported ggplot2, you already have the "iris" dataset)
+
+```{r}
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+  geom_point(aes(shape = Species), size = 3)
+```
+
+
+## Challenge 3
+Create the plot below using 1000 points from the `diamonds` dataset.
+(Hint: Use `sample_n()` to make a smaller dataset). For an added challenge, make the points semi-transparent.
+
+```{r}
+d2 <- diamonds %>% sample_n(1000)
+ggplot(d2, aes(carat, price)) + geom_point(aes(col=color))
+```
+
+
+## Challenge 4
+You can add a trendline to a plot using stat_smooth(). Try making the plot below with the `iris` dataset, with a trendline and color added.
+```{r, warning=FALSE,message=FALSE}
+ggplot(iris, aes(Sepal.Width, Petal.Length, group=Species, col=Species)) + stat_smooth(method="lm")
+```
+
+## Challenge 5
+
+Try making the plot below, by modifying the climate plot we just made:
+
+```{r, message=FALSE, warning=FALSE}
+ggplot(clim, aes(Date, Mean, group=Source, col=Source)) + stat_smooth() + geom_hline(yintercept=0, linetype="dashed")
+```
+
