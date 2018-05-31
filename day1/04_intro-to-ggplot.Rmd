@@ -1,5 +1,5 @@
 ---
-title: "“Introduction to ggplot2""
+title: "Introduction to ggplot2"
 author: "Sarah Supp"
 date: "5/16/2018"
 output: html_document
@@ -49,6 +49,7 @@ range(MOM$avg_mass_g)
 library(naniar)
 MOM <- MOM %>%
   replace_with_na(replace = list(avg_mass_g = -999, log_mass_g = -999.00))
+range(MOM$avg_mass_g, na.rm=TRUE)
 ```
 
 ### What plots do I need?
@@ -60,11 +61,11 @@ Before we start to make plots, let's think about what we'd like to do more caref
 
 We can spend all day making graphs, but there are a few rules of thumb we can use to avoid wasting effort, and to avoid going down a rabbit hole that distracts us from our main purpose.
 
-1. What's your point? 
+####1. What's your point? 
 Are you visualizing data for exploratory purposes (to understand it better) or for explanatory purposes (to make a specific point to someone else)?
 The goal is not always to display *all* of the data as neatly and completely as possible!
 
-2. Choose the right plot
+####2. Choose the right plot
 Think about what each kind of plot can tell you and how your data type constrains your options.
 Would quantitative or qualitative data be best shown on this plot?
 Would the plot be best to display discrete data (categories, integers) or continuous data?
@@ -79,17 +80,18 @@ Does this plot show all the data, or does it break it into distinct groups?
 * layers can add more information as *color, shape, size* etc.
 * advanced plotting commands may include: heatmaps, layered or stacked bar graphs, maps, animated plots, 3D plots, and more!
 
-3. Less is more
+####3. Less is more
 Don't overcomplicate and try to be as straightforward as possible. Especially for explanatory plots, you want to try to focus your reader's attention.
 
-4. Use color intentionally
+####4. Use color intentionally
 Use color to emphasize certain parts of a graph, or to push other parts to the background. For example, color could differentiate groups in a graph, or help your key results that are the most exciting to stand out!
 
-5. Add a title and good axis labels to help read and understand your graph
+####5. Add a title and good axis labels to help read and understand your graph
 
-6. Experiment, get feedback, and iterate - can someone else understand it?
+####6. Experiment, get feedback, and iterate
+Can someone else understand it?
 
-There are **many** other options and different opinions on making graphics. Let's start with some of the most common ones, and make some plots!
+*There are **many** other options and different opinions on making graphics. Let's start with some of the most common ones, and make some plots!*
 
 ### How do we make a ggplot - step by step
 
@@ -107,22 +109,37 @@ ggplot2 uses the “grammar of graphics”, an idea that making a visualization 
 
 ggplot uses a basic template, and beyond the initial set-up, you get to choose which pieces you want to use, and what you want to specify. Start simple, and build up to complexity.
 
+***
+
+####Some terminology:
+* **ggplot** - the main function where you specify the dataset and variables to plot (your "canvas") 
+* **geoms** - geometric objects
+  + `geom_point()`, `geom_bar()`, `geom_density()`, `geom_line()`, `geom_area()`
+* **aes** - aesthetics
+  + shape, size, color, fill, linetype, transparency (alpha)
+* **scales** - define how your data will be plotted
+  + continuous, discrete, log
+* `+` vs `%>%`
+  
+*** 
+
 All plots begin with the "canvas" :
 
 `ggplot(data, aes(x,y))`
 
-`aes()` is the “aesthetics” of the plot - in other words, which data do you want to use or “map” into your graphic. It always goes in the order x and y. If you want to make a distribution of only one variable, you would only specify x. 
+Inside ggplot, `aes()` is the “aesthetics” of the plot - in other words, which data do you want to use or “map” into your graphic. It always goes in the order x and y. If you want to make a distribution of only one variable, you would only specify x. 
+
 Alone, this won’t plot anything, because it just tells R that you want to make a plot, with data.
 
 We need to use `+` to add other "layers" to the plot and tell R to show us the plot.
 
-To tell it what kind of plot to make, you need to add a “geom_” layer. geom_type() tells ggplot what kind of “geometry” you want your graphic to have. Google is the best place to go for this, or the [ggplot2 website](http://ggplot2.tidyverse.org/reference/). There is built-in help in R, but the website is better to use if you need clarification or ideas.
+To tell it what kind of plot to make, you need to add a “geom_” layer. `geom_type()` tells ggplot what kind of “geometry” you want your graphic to have. Google is the best place to go for this, or the [ggplot2 website](http://ggplot2.tidyverse.org/reference/). There is built-in help in R, but the website is better to use if you need clarification or ideas.
 
 ggplot uses a different syntax to plot than the base R plot functions, so it looks a little different and takes some time to get used to. Start simple, and build up to complexity!
 
 ggplot() sets defaults for layers
 * Combine layers with `ggplot()` using +
-* You will need to have a  + at the end of every row, except the last one!
+* You will need to have a `+` at the end of every row, except the last one!
 * Must have at least one layer to plot
 * geom_ specifies how you want to plot, and may include statistical transformations
 * Add additional layers, as necessary
@@ -150,6 +167,10 @@ hist(MOM$log_mass_g)
 # ggplot histogram
 ggplot(MOM, aes(x = log_mass_g)) + 
   geom_histogram()
+
+# or we could build it iteratively!
+myplot <- ggplot(MOM, aes(x = log_mass_g))
+myplot + geom_histogram()
 
 # specify binwidth
 ggplot(MOM, aes(log_mass_g)) + 
@@ -231,20 +252,86 @@ ggplot(MOM, aes(avg_mass_g, log_mass_g)) +
   facet_wrap(~continent)
 ```
 
-## Try experimenting with your own plots
+## Adding a trendline
+Sometimes, we can convey more information by also plotting a trendline. Let's try this using the `iris` dataset, so see if petal width can be predicted by sepal width.
+
 ```{r}
-starwars
-iris 
-
-# histogram
-
-# boxplot
-
-# barplot
-
-# scatterplot
-
+ggplot(iris, aes(Sepal.Width, Petal.Length)) + geom_point() + stat_smooth()
 ```
+
+It doesn't look like much, but the data look somewhat clumped. Since we know there are multiple species in this dataset, let's try making three separate trendlines for each of the 3 species.
+
+```{r}
+ggplot(iris, aes(Sepal.Width, Petal.Length, group=Species)) + geom_point() + stat_smooth()
+```
+OK, so that's a little more interesting!
+
+### Time series
+What if we want to track something through time? Then we need a `geom_line`.
+Let's try using data downloaded for [global temperature anomalies 1880-2016](https://datahub.io/core/global-temp). You can find this dataset in the day1 folder. Go ahead and load it into R now.
+
+```{r}
+clim <- read_csv("climate_anomalies_1880-2016.csv")
+```
+
+This is a pretty large dataset, with anomalies estimated by two different sources: GISTEMP (Global Land-Ocean Temperature Index) and GCAG (Global Component of Climate at a Glance). So it might take awhile for the plot to appear on your laptop. Or you could use your new dplyr skills to subset it to be a smaller version of the dataset (e.g. the past 50 years).
+
+```{r}
+ggplot(clim, aes(Date, Mean, group=Source, col=Source)) + geom_line() + geom_hline(yintercept=0)
+
+# or plot just the overall trend
+ggplot(clim, aes(Date, Mean, group=Source, col=Source)) + stat_smooth() + geom_hline(yintercept=0, linetype="dashed")
+```
+
+
+### Themes to control overall appearance of plots
+ggplot2 has themes!
+
+You can find a complete list of themes at [http://docs.ggplot2.org/current/ggtheme.html](http://docs.ggplot2.org/current/ggtheme.html). And some more info [here](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/).
+
+You can install a new theme using `install.packages("ggthemes")`
+
+```{r}
+library(ggthemes)
+```
+
+Let's just see what this looks like on one of the plots we previously made.
+
+```{r}
+iris_plot <- ggplot(iris, aes(Sepal.Width, Petal.Length, group=Species, col=Species)) + geom_point() + stat_smooth()
+
+# excel 
+iris_plot + theme_excel()
+
+# The Economist
+iris_plot + theme_economist()
+
+# Fivethirtyeight
+iris_plot + theme_fivethirtyeight()
+
+# Tufte
+iris_plot + theme_tufte()
+
+# Stephen Few
+iris_plot + theme_few()
+
+# minimal
+iris_plot + theme_minimal()
+
+# black and white
+iris_plot + theme_bw()
+
+# solarized
+iris_plot + theme_solarized()
+```
+
+### How to save before you go
+ggsave to the rescue! You can save your plot as a `png`, `pdf`, `jpeg`, and more! (see help file for full description. If you don't specify `plot`, it will default to the most recent (last) plot that you made. Unless otherwise specified, it will save into your current working directory.
+
+```{r}
+ggsave(filename = "iris.png", plot=iris_plot, width=6, height=4)
+```
+
 
 ## Additional information
 
