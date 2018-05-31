@@ -1,0 +1,184 @@
+---
+title: "02_writing-functions-slides"
+author: "Sarah Supp"
+date: "5/31/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Want to write your own function?
+
+- Write code in understandable chunks
+- Write reusable code
+- Avoid repeating code chunks
+- Keep functions small
+
+
+## Should I write one?
+
+**Question:** When should I write a function?
+
+**Answer:** Anytime you want to copy and paste a block of code more than twice!
+
+
+## How do I write one?
+
+To create a function you will need **3 things**:
+
+1. A name for your function
+2. A list of inputs
+3. Code that tells the function what to do
+
+
+## How do I write one?
+
+To create a function you will need **3 things**:
+
+1. A name for your function
+2. A list of inputs
+3. Code that tells the function what to do
+
+```{r, echo=TRUE}
+function_name <- function(inputs) {
+  output_value <- do_something(inputs)
+  return(output_value)
+}
+```
+
+
+## Function Challenge 1
+Write a function that converts pounds to grams (1 lb = 453.592 g). It should take a value in pounds as the input and return the equivalent value in grams.
+
+
+## Function Challenge 2.1
+The length of an organism is typically strongly correlated with its body mass. This is useful because it allows us to estimate the mass of an organism even if we only know its length. This relationship generally takes the form:
+
+`Mass = a * Length^b`
+
+Where the parameters a and b vary among groups. This allometric approach is regularly used to estimate the mass of dinosaurs since we cannot weigh something that is only preserved as bones.
+
+
+## Function Challenge 2.2
+This estimates the mass of a therapod dinosaur in kg based on it’s length in meters for a set of values (a=0.73, b=3.63; Seebacher 2001).
+```{r, echo=TRUE}
+get_mass_from_length_theropoda <- function(length){
+  mass <- 0.73 * length ** 3.63
+  return(mass)
+}
+```
+1. Add a comment to this function so that you know what it does.
+2. Use this function to print out the mass of a Spinosaurus that is 16 m long. Spinosaurus is a super cool predator that is bigger than T-Rex.
+
+
+## Function Challenge 2.3
+OK, let's edit and make this more flexible...
+
+```{r, echo=TRUE}
+get_mass_from_length_theropoda <- function(length){
+  # Therapod mass, using a=0.73 and b=3.63; Seebacher 2001
+  mass <- 0.73 * length ** 3.63
+  return(mass)
+}
+```
+
+1. Create a new function called `get_mass_from_length()` that estimates the mass in kg based on length in meters by taking length, a, and b as parameters. To be clear we want to pass the function all 3 values that it needs to estimate a mass as parameters. This makes it much easier to reuse for all of the non-theropod species. 
+2. Use this new function to estimate the mass of a Sauropoda (a = 214.44, b = 1.46) that is 26 m long.
+
+
+## Function Challenge 3
+Measuring things using the metric system is the standard approach for scientists, but when communicating your results more broadly it may be useful to use different units (at least in some countries). 
+
+1. Write a function that converts kilograms into pounds (2.205 lbs = 1 kg). 
+2. Use that function along with your dinosaur mass function from to estimate the weight, in pounds, of a 12 m long Stegosaurus. In Stegosauria, a has been estimated as 10.95 and b has been estimated as 2.64 ([Seebacher 2001] (http://www.jstor.org/stable/4524171?seq=5#page_scan_tab_contents)).
+
+
+## Conditional "if" Statements
+* if statements use conditional statements to control flow of program processing.
+
+``` 
+if (the_conditional_statement_is TRUE ) { 
+  do_something 
+  }else { 
+  do_a_different_something 
+  }
+```
+
+ **TRUE** if condition is met
+
+ **FALSE** if condition is not met
+ 
+## Function Challenge 4.1
+
+The following function is intended to check if two geographic points are near(TRUE) or far apart (FALSE) from each other. Two points are considered near to each other if the absolute value of the difference in their latitudes is less than one and the absolute value of the difference in their longitudes is less than one.
+ 
+1. Fill in the BLANKS _______ in the function to make it work.
+
+```
+near <- function(lat1, long1, lat2, long2){
+    # Check if two geographic points are near each other 
+    if ((abs(lat1 - lat2) < 1) & (_________){
+        near <- TRUE
+    } else {
+        near <- _________
+    }
+    return(near)
+}
+```
+
+## Function Challenge 4.2
+
+2. Improve the documentation for the function so that it is clear what near means and what output the user should expect.
+3. Check if Point 1 (latitude = 29.65, longitude = -82.33) is near Point 2 (latitude = 41.74, longitude = -111.83).
+4. Check if Point 1 (latitude = 29.65, longitude = -82.33) is near Point 2 (latitude = 30.5, longitude = -82.8).
+
+```
+near <- function(lat1, long1, lat2, long2){
+    # Check if two geographic points are near each other 
+    if ((abs(lat1 - lat2) < 1) & (_________){
+        near <- TRUE
+    } else {
+        near <- _________
+    }
+    return(near)
+}
+```
+
+## Function Challenge 4.3
+5. Create a new version that improves the function by allowing the user to set what “near” means as a parameter. To avoid changing the function's existing behavior, give the parameter a default value of 1.
+6. Improve the documentation for the new function so that it reflects this new behavior
+7. Check if Point 1 (latitude = 48.86, longitude = 2.35) is near Point 2 (latitude = 41.89, longitude = 2.5), when near = 7.
+
+```
+near <- function(lat1, long1, lat2, long2){
+    # Check if two geographic points are near each other 
+    if ((abs(lat1 - lat2) < 1) & (_________){
+        near <- TRUE
+    } else {
+        near <- _________
+    }
+    return(near)
+}
+```
+
+## Super Challenge
+Seebacher 2001, parameters for all major dinosaur taxa
+
+Taxa    | a   | b | R2
+-----|-----|-----|-----
+Ankylosauria  | 16.54 | 2.51 | 0.54
+Ceratopsia | 12.58 | 2.90 | 0.98
+Ornithopoda | 11.81 | 2.66 | 0.99
+Prosauropoda | 12.32 | 2.40 | 0.99
+Sauropoda | 214.44 | 1.46 | 0.86
+Stegosauria | 10.95 | 2.64 | 0.59
+Theropoda | 0.73 | 3.63 | 0.98
+
+
+## Super Challenge
+1. Write a function that will read in the dino_collection.csv file, wrangle it, use the functions to estimate mass in both kilograms and in pounds, based on the specimen's taxa, and add new columns with this information to the data table. 
+
+2. Plot the dinosaur masses by body length, and color the points by taxa. What is the heaviest dinosaur? The lightest?
