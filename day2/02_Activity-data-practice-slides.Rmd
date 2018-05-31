@@ -1,0 +1,42 @@
+---
+title: "02_Activity-slides"
+author: "Sarah Supp"
+date: "5/31/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## data exploration (summary, glimpse, range, unique, etc.)
+
+1. How many species are represented?
+2. What years was the site surveyed?
+3. What is the range of weights? hindfoot lengths?
+4. What is the average weight? hindfoot length?
+
+## data visualization 1.0 (ggplot)
+
+1. Is weight correlated with hindfoot length?
+2. Look at a distribution of the weights by each species separately.
+
+## data wrangling (dplyr)
+
+1. Keep only the rodent species.
+2. Make a second table that counts the number of species captured at the site in each year. 
+3. Make a third table that summarizes the number of individuals and average weights of each species in each year and plot.
+4. Make a fourth table that only keeps complete records (no missing values)
+5. The species "PB" stands for *Perognathus baileyi* which is now in the genus *Chaetodipus* (also true for "PP", *Perognathus penicillatus*. Change the species codes from "PB" to "CB" and "PP" to "CP". 
+6. Remove records only identified only to genus ("X").
+7. In the actual dataset, *Neotoma albigula* is identified as NA. Why do you think it was changed to NL here? Could you change it back to NA? Why or why not?
+
+## data visualization 2.0 (ggplot)
+
+1. Which rodent species have been captured most frequently?
+2. Has the number of species at the site changed through time?
+3. Has average weight changed through time?
+4. Are the average weights different for males of females of each species?
+
+## What else would you like to look at in this dataset? Explore!
+
