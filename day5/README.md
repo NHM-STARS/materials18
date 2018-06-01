@@ -5,8 +5,8 @@ Suggested
 
 - Interrogating your data
     - look carefully at your data and make sure you understand it
-    - Write your own version of the metadata
-    - create a data management plan
+    - Write your own version of the metadata (http://mozillascience.github.io/working-open-workshop/data_reuse/)
+    - create a data management plan (http://www.dcc.ac.uk/sites/default/files/documents/resource/DMP/DMP_Checklist_2013.pdf)
     
 - Exploring and wrangling your data
     - Bring your data into R
