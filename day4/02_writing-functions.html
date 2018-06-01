@@ -272,16 +272,78 @@ est_watermelon_mass_dim(20, 10, 13)</code></pre>
 <hr />
 <p>(5-15 mins) <strong>You try</strong></p>
 <ol style="list-style-type: decimal">
-<li><p>Measuring things using the metric system is the standard approach for scientists, but when communicating your results more broadly it may be useful to use different units (at least in some countries). Write a function that converts kilograms into pounds (2.205 lbs = 1 kg). Use that function along with your dinosaur mass function from to estimate the weight, in pounds, of a 12 m long Stegosaurus (12 m is about as big as they come and nothing gets folks excited like a giant dinosaur). In Stegosauria, a has been estimated as 10.95 and b has been estimated as 2.64 ([Seebacher 2001] (<a href="http://www.jstor.org/stable/4524171?seq=5#page_scan_tab_contents" class="uri">http://www.jstor.org/stable/4524171?seq=5#page_scan_tab_contents</a>)).</p></li>
-<li><p>Seebacher’s paper published the parameters for mass conversion for each of the major taxnomic groups of dinosaurs.</p></li>
+<li>Measuring things using the metric system is the standard approach for scientists, but when communicating your results more broadly it may be useful to use different units (at least in some countries). Write a function that converts kilograms into pounds (2.205 lbs = 1 kg). Use that function along with your dinosaur mass function from to estimate the weight, in pounds, of a 12 m long Stegosaurus (12 m is about as big as they come and nothing gets folks excited like a giant dinosaur). In Stegosauria, a has been estimated as 10.95 and b has been estimated as 2.64 ([Seebacher 2001] (<a href="http://www.jstor.org/stable/4524171?seq=5#page_scan_tab_contents" class="uri">http://www.jstor.org/stable/4524171?seq=5#page_scan_tab_contents</a>)).</li>
 </ol>
+<hr />
+</div>
+</div>
+<div id="why-should-i-use-functions" class="section level2">
+<h2>Why should I use functions?</h2>
+<ul>
+<li>Better than copy-paste</li>
+<li>You can give a function an evocative or useful name that makes your code easier to read and understand</li>
+<li>If you decide to change something or find a bug, you only need to update your code in one place, instead of many (reduce repetition, increase replicability)</li>
+<li>You reduce the chances of making mistakes while you copy and paste (for example, if you update part of the code, but forget to do it in the other places it appears)</li>
+</ul>
+<p><strong>Note</strong>: Recall the importance of good code style. As things get more complex, using consistent spacing, naming, and readable style vastly increases your (or someone else’s) ability to read or update your code, and to understand what you did!</p>
+</div>
+<div id="conditional-statements" class="section level2">
+<h2>Conditional Statements</h2>
+<ul>
+<li>Generate logical statements</li>
+<li>TRUE if condition is met</li>
+<li>FALSE if condition is not met</li>
+</ul>
+<p><strong>Operators</strong> * == * != * &lt; * &gt; * &lt;= * &gt;= * Combine using (and) &amp; (or) |</p>
+<p>You commonly see conditionals used in: * subset() * dplyr::filter(), ifelse() * if(), else(), while() * functions</p>
+<div id="if-statements" class="section level3">
+<h3>if statements</h3>
+<ul>
+<li>Conditional statements generate “logical” to filter inputs.</li>
+<li>if statements use conditional statements to control flow of program processing.</li>
+</ul>
+<pre><code>if (the_conditional_statement_is TRUE ) { 
+  do_something 
+  }
+else { 
+  do_a_different_something 
+  }</code></pre>
+<p>(5-10 mins) <strong>You try</strong> Fill in the blanks such that we can determine if two points are near (TRUE) or far apart (not near; FALSE).</p>
+<p>The following function is intended to check if two geographic points are close to one another. If they are it should return TRUE. If they aren’t, it should return FALSE. Two points are considered near to each other if the absolute value of the difference in their latitudes is less than one and the absolute value of the difference in their longitudes is less than one.</p>
+<ol style="list-style-type: decimal">
+<li>Fill in the BLANK _______ in the function to make it work.</li>
+</ol>
+<pre><code>near &lt;- function(lat1, long1, lat2, long2){
+    # Check if two geographic points are near each other 
+    if ((abs(lat1 - lat2) &lt; 1) &amp; (_________){
+        near &lt;- TRUE
+    } else {
+        near &lt;- _________
+    }
+    return(near)
+}</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Improve the documentation for the function so that it is clear what near means and what output the user should expect.</li>
+<li>Check if Point 1 (latitude = 29.65, longitude = -82.33) is near Point 2 (latitude = 41.74, longitude = -111.83).</li>
+<li>Check if Point 1 (latitude = 29.65, longitude = -82.33) is near Point 2 (latitude = 30.5, longitude = -82.8).</li>
+<li>Create a new version of the function that improves it by allowing the user to pass in a parameter that sets what “near” means. To avoid changing the existing behavior of the function (since some of your collaborators are using it already) give the parameter a default value of 1.</li>
+<li>Improve the documentation for the new function so that it reflects this new behavior</li>
+<li>Check if Point 1 (latitude = 48.86, longitude = 2.35) is near Point 2 (latitude = 41.89, longitude = 2.5), when near is set to 7.</li>
+</ol>
+<ul>
+<li>What examples can you think of where it would be useful to write our own functions?</li>
+<li>When have we used logical statements this week so far? Does this make sense to you?</li>
+<li>What do you think you could now create, if you know how to write your own function and logical statements?*</li>
+</ul>
+<hr />
+<p><strong>Super Challenge.</strong> Seebacher’s paper published the parameters for mass conversion for each of the major taxnomic groups of dinosaurs.</p>
 <table>
 <thead>
 <tr class="header">
 <th>Taxa</th>
 <th>a</th>
 <th>b</th>
-<th>r2</th>
+<th>R2</th>
 </tr>
 </thead>
 <tbody>
@@ -329,11 +391,12 @@ est_watermelon_mass_dim(20, 10, 13)</code></pre>
 </tr>
 </tbody>
 </table>
+<ol style="list-style-type: decimal">
+<li>Write a function that will read in the dino_collection.csv file, wrangle it, use the functions to estimate mass in both kilograms and in pounds, based on the specimen’s taxa, and add new columns with this information to the data table.</li>
+<li>Plot the dinosaur masses by body length, and color the points by taxa. What is the heaviest dinosaur? The lightest?</li>
+</ol>
 </div>
 </div>
-</div>
-<div id="what-are-best-practices-for-writing-a-function" class="section level1">
-<h1>What are best practices for writing a function?</h1>
 </div>
 
 

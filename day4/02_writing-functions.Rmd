@@ -241,7 +241,7 @@ You commonly see conditionals used in:
 * Conditional statements generate "logical" to filter inputs.
 * if statements use conditional statements to control flow of program processing.
 
-```{r} 
+``` 
 if (the_conditional_statement_is TRUE ) { 
   do_something 
   }
@@ -258,7 +258,7 @@ The following function is intended to check if two geographic points are close t
  
 1. Fill in the BLANK _______ in the function to make it work.
 
-```{r}
+```
 near <- function(lat1, long1, lat2, long2){
     # Check if two geographic points are near each other 
     if ((abs(lat1 - lat2) < 1) & (_________){
