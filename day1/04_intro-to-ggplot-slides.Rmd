@@ -11,10 +11,15 @@ library(ggplot2)
 library(tidyverse)
 library(naniar)
 
+# Masses of Mammals
 MOM <- read_tsv("MOMv3.3.txt", col_names=F)
 names(MOM) <- c("continent", "status", "order", "family", "genus", "species", "log_mass_g", "avg_mass_g", "reference")
 MOM <- MOM %>%
   replace_with_na(replace = list(avg_mass_g = -999, log_mass_g = -999.00))
+
+# Climate data
+clim <- read_csv("climate_anomalies_1880-2016.csv")
+
 ```
 
 ## Challenge 1
