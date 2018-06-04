@@ -17,8 +17,6 @@ inside the console of your Rstudio (paste the line of code above at the `>` prom
 ```r
 # From Rstudio run:
 usethis::use_course("https://www.dropbox.com/s/izppxfb2frz43op/nhm18.zip?dl=0")
-# THIS LINK WILL CHANGE BEFORE THE COURSE STARTS
-# DO NOT RUN THIS BEFORE MONDAY AM
 # This will download this repo to your desktop, and unpack everything. 
 # After that just open the folder and double click materials18.Rproj
 ```
