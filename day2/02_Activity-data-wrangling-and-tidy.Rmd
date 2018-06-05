@@ -18,6 +18,7 @@ Now that we've thought about some general data rules and pitfalls, let's look at
 
 #### 1. Tell R where your data are
 ```{r}
+library(conflicted)
 library(tidyverse)
 surveys <- read_csv("example_data/surveys.csv")
 species <- read_csv("example_data/species.csv")
@@ -26,6 +27,7 @@ species <- read_csv("example_data/species.csv")
 #### 2. Look at the data
 ```{r}
 glimpse(surveys)
+glimpse(species)
 ```
 
 ### Is this data tidy? 
@@ -41,7 +43,7 @@ Let's try some open-ended tasks to build on things we've learned so far:
 
 ### data exploration (summary, glimpse, range, unique, etc.)
 
-1. How many species are represented?
+1. How many species are represented? How many of these are rodents?
 2. What years was the site surveyed?
 3. What is the range of weights? hindfoot lengths?
 4. What is the average weight? hindfoot length?
@@ -69,5 +71,12 @@ Let's try some open-ended tasks to build on things we've learned so far:
 4. Are the average weights different for males of females of each species?
 
 ### What else would you like to look at in this dataset? Explore!
+There are many different kinds of plots we can make, and different ways we can add third, fourth, or more variables to our plots using color, shape, size, facets, and more. 
+
+1. Go to [Top 50 R plots](http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html) and scan through for a plot that looks interesting to you. Code is provided on this website. See if you can translate it to making a similar looking plot using this dataset.
+
+2. Want a certain *style* to your plots that matches the journal specifications, or looks cool for a presentation? Try using ggthemes. Scan through the options on the [ggthemes website](https://cran.r-project.org/web/packages/ggthemes/vignettes/ggthemes.html) and try one or more that look appealing to you.
+
+3. There are even more ways to polish your plots, by choosing [custom colors or palettes](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf), using [color-blind friendly colors](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html), or using additional packages.
 
 
