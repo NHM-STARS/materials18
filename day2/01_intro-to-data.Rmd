@@ -126,6 +126,12 @@ MS Excel has 2 different date origins, which it uses to store dates (11/14/56) a
 
 ***
 
+## Planning for data Re-use 
+
+* This is a critical thing to do, whether you have collected the data or are using someone else's data, or whether you *think* you will be the only person using the data in the future, or plan to share the data more broadly.
+  + [Plan for data reuse](http://mozillascience.github.io/working-open-workshop/data_reuse/)
+
+
 ### For more details on data hygiene, documentation, and organization
 
 See [handout](https://nhm-stars.github.io/materials/day01/RDM_intro.html) for more advice on data management and organizing your own file structure system.
