@@ -1,0 +1,138 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## Setup and libraries
+```{r}
+library(tidyverse)
+
+#-------- load data
+species <- read_csv("example_data/species.csv")
+surveys <- read_csv("example_data/surveys.csv")
+
+glimpse(species)
+glimpse(surveys)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+## Let's explore and summarize the Portal Project data. 
+
+1. How many species are represented?
+2. What years was the site surveyed?
+3. What is the range of weights? hindfoot lengths?
+4. What is the average weight? hindfoot length?
+
+```{r}
+surveys %>%
+  summarise(num_years = max(year) - min(year),
+            start_year = min(year),
+            end_year= max(year),
+            num_species = n_distinct(species_id),
+            min_wgt = min(weight, na.rm=TRUE),
+            mean_wgt = mean(weight, na.rm=TRUE),
+            max_wgt = max(weight, na.rm=TRUE),
+            min_hfl = min(hindfoot_length, na.rm=TRUE),
+            mean_hfl = mean(hindfoot_length, na.rm=TRUE),
+            max_hfl = max(hindfoot_length, na.rm=TRUE))
+```
+
+## Let's visualize relationships in the data
+
+1. Is weight correlated with hindfoot length?
+
+```{r}
+ggplot(surveys, aes(hindfoot_length, weight, group=species_id)) + 
+  geom_point(alpha=0.25) + 
+  stat_smooth(method=lm, aes(col=species_id))
+```
+
+2. Look at a distribution of the weights by each species separately.
+```{r}
+ggplot(surveys, aes(weight)) + 
+  geom_histogram() + 
+  facet_wrap(~species_id)
+```
+
+## Merge the two datasets to make it easier
+```{r}
+surveys2 <- merge(surveys, species, all.x=T)
+```
+
+## Wrangle the data
+
+```{r}
+# Keep only the rodent species
+rats <- surveys2 %>%
+  filter(taxa == "Rodent")
+
+# Count the number of species captured at the site in each year
+species_richness <- rats %>%
+  group_by(year) %>%
+  summarise(total=n_distinct(species_id))
+
+# Summarize the number and average weights of each species in each year and plot
+summary_by_year_plot <- rats %>%
+  group_by(year, plot_id, species_id) %>%
+  summarise(count=n(), mean=mean(weight, na.rm=TRUE))
+
+# Keep only complete records (no missing values)
+complete_records <- summary_by_year_plot %>%
+  filter(!is.na(mean))
+
+# Change the species codes from "PB" to "CB" and "PP" to "CP". 
+# Remove records only identified only to genus ("X").
+rats2 <- rats %>%
+  mutate(species_id = replace(species_id, species_id=="PB", "CB")) %>%
+  mutate(species_id = replace(species_id, species_id=="PP", "CP"))
+
+# summarize by year
+rats2 <- rats2 %>%
+  group_by(year, species_id) %>%
+  summarise(count=n())
+```
+
+## More data visualization on the cleaned and summary datasets
+
+Which rodent species have been captured most frequently
+```{r}
+# Which rodent species have been captured most frequently?
+ggplot(summary_by_year_plot, aes(year, count, group=species_id)) + 
+  geom_line(aes(col=species_id))
+```
+
+
+### Has the number of species at the site changed through time?
+```{r}
+richness_thru_time <- ggplot(species_richness, aes(year, total)) + 
+  geom_line(col="deeppink")
+```
+
+### Has average weight changed through time?
+```{r}
+ggplot(summary_by_year_plot, aes(year, mean, col=species_id)) + 
+  geom_point() + 
+  geom_line() + 
+  facet_wrap(~plot_id)
+```
+
+### Summarize the average weights of each sex and species
+```{r}
+average_MF_mass <- rats %>%
+  filter(species_id %in% c("DM", "DO", "CB", "CP")) %>%
+  group_by(sex, species_id) %>%
+  summarise(mean_mass=mean(weight, na.rm=TRUE))  
+
+ggplot(average_MF_mass, aes(sex, mean_mass)) + 
+  geom_boxplot(aes(col=sex)) + facet_wrap(~species_id)
+```
+
+#![This is a cat](http://placekitten.com/600/300)
+
+#![And this is a bear](http://placebear.com/600/300)
+
+
+
+
+
