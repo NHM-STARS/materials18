@@ -32,10 +32,13 @@ usethis::use_course("https://github.com/karthik/nhm18/raw/master/nhm18.zip")
 - Introduction to the course
 - Introduction to R  
 		- [Intro to R (slides)](https://github.com/NHM-STARS/materials18/blob/master/lectures/intro-to-R.pdf)
+
 		- [Introduction to Rstudio (slides)](http://inundata.org/lectures/basics-rstudio/#/) 
 - The `tidyverse`, data wrangling and tidying in R.   
 		- [Introduction to the Tidyverse (Karthik's slides)](http://inundata.org/lectures/tidyr/#/)   
+
 		- [Intro to the Tidyverse (Natalie's slides)](https://github.com/NHM-STARS/materials18/blob/master/lectures/intro-to-tidyverse.pdf)
+
 		- [Working with dates in R (slides)](http://inundata.org/lectures/lubridate/#/)
 - Data Visualization with `ggplot2`
 
@@ -48,6 +51,7 @@ usethis::use_course("https://github.com/karthik/nhm18/raw/master/nhm18.zip")
 ## 🌍 Day 3
 
 - Basic statistics in R
+
 		- [Basic stats (slides)](https://github.com/NHM-STARS/materials18/blob/master/lectures/basic-stats-R.pdf)
 - Git and GitHub through RStudio and the terminal
 - Making maps with `ggmap` and `leaflet`
