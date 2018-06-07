@@ -250,6 +250,26 @@ else {
   }
 ```
 
+**Note**: I could also use if statements to insert flags into my functions. For example. One rule is to never trust user input (*all user input is potentially wrong*). User input should checked and you can provide thoughtful feedback when something is wrong.
+
+```{r}
+est_watermelon_mass_dim <- function(length, width, height){
+  if(length < 0 | width < 0 | height < 0) {
+    stop('watermelon inputs must be positive')
+  }
+  if(length < 5 | width < 5 | height < 5) {
+    warning('this watermelon seems suspisciously small. Check raw data.')
+  }
+  volume = calc_watermelon_vol(length, width, height)
+  mass <- est_watermelon_mass(volume)
+  return(mass)
+}
+
+est_watermelon_mass_dim(20, 10, 13)
+```
+
+
+
 (5-10 mins)
 **You try**
 Fill in the blanks such that we can determine if two points are near (TRUE) or far apart (not near; FALSE). 
@@ -298,5 +318,21 @@ Theropoda | 0.73 | 3.63 | 0.98
 1. Write a function that will read in the dino_collection.csv file, wrangle it, use the functions to estimate mass in both kilograms and in pounds, based on the specimen's taxa, and add new columns with this information to the data table. 
 2. Plot the dinosaur masses by body length, and color the points by taxa. What is the heaviest dinosaur? The lightest?
 
+
+```{r}
+dinos <- read_csv("example_data/dino_collection.csv")
+```
+
+```
+dino_fxn <- function(data) {
+ 
+   data2<- data %>%
+    mutate(mass = ifelse(suborder=="Therapoda", 0.73 * length ** 3.63,
+                  ifelse(suborder=="Stegosauria", 10.95 * length ** 2.64,
+                  if else(suborder==""...))))
+    arrange()
+  return(data2)
+}
+```
 
 
