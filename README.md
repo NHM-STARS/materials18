@@ -51,7 +51,7 @@ usethis::use_course("https://github.com/karthik/nhm18/raw/master/nhm18.zip")
 - [Basic stats (slides)](https://github.com/NHM-STARS/materials18/blob/master/lectures/basic-stats-R.pdf)
 - Git and GitHub through RStudio and the terminal
 - Making maps with `ggmap` and `leaflet`
-		- [Intro to ggmap (slides)](https://github.com/NHM-STARS/materials18/blob/master/lectures/ggmap_basics.pdf)
+- [Intro to ggmap (slides)](https://github.com/NHM-STARS/materials18/blob/master/lectures/ggmap_basics.pdf)
 
 ## 🚀 Day 4: Reproducibility
 
