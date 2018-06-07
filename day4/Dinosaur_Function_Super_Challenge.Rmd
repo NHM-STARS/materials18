@@ -1,0 +1,129 @@
+---
+title: "Dinosaur Super Challenge"
+author: "Sarah Supp"
+date: "6/7/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Sarah Supp
+NHM Course, May 2018
+
+## Import the libraries and data needed
+```{r, warning=FALSE, echo=FALSE}
+library(tidyverse)
+
+dinos <- read_csv("example_data/dino_collection.csv") 
+
+```
+
+***
+
+## Write functions to help calculate mass from length and deal with different taxa
+
+estimate dinosaur mass (kg) from length (m)
+```{r}
+est_mass_from_length <- function(length, a, b){
+  # dinosaur mass, using a and b; Seebacher 2001
+  mass <- a * length ** b
+  return(mass)
+}
+```
+
+convert mass (kg) to weight (lbs)
+```{r}
+kg2lbs <- function(kg) {
+  # converts kilograms to pounds
+  pounds <- kg * 2.205
+  return(pounds)
+}
+```
+
+Identify the suborder from the dataset and add columns for a and b parameters
+```{r}
+
+find_suborder_params <- function(data){
+  #identify suborder and correct a, b parameters
+  # input: dataset with columns for suborder and length
+  # output: dataset with columns for a and b parameters
+  data_with_params <- data %>%
+    mutate(a = case_when(suborder == "therapoda" ~ 0.73,
+                         suborder == "sauropoda" ~ 214.44,
+                         suborder == "ankylosauridae" ~ 16.54,
+                         suborder == "ceratopsia" ~ 12.58,
+                         suborder == "stegosauria" ~ 10.95,
+                         suborder == "ornithopoda" ~ 11.81,
+                         suborder == "prosauropoda" ~ 12.32,
+                         TRUE ~ NA_real_)) %>%     
+            # the above line is for an instance where "case_when" doesn't match anything
+    mutate(b = case_when(suborder == "therapoda" ~ 3.63,
+                         suborder == "sauropoda" ~ 1.46,
+                         suborder == "ankylosauridae" ~ 2.51,
+                         suborder == "ceratopsia" ~ 2.90,
+                         suborder == "stegosauria" ~ 2.64,
+                         suborder == "ornithopoda" ~ 2.66,
+                         suborder == "prosauropoda" ~ 2.40,
+                         TRUE ~ NA_real_))
+  return(data_with_params)
+}
+```
+
+***
+
+## Clean and wrangle the dinosaur data
+```{r}
+glimpse(dinos)
+summary(dinos)
+
+dinos$suborder <- tolower(dinos$suborder)
+unique(dinos$suborder)
+
+# fix the typos; should be only 7 suborders
+dinos2 <- dinos %>%
+  mutate(suborder = ifelse(suborder=="tegosauria", "stegosauria", ifelse(suborder=="onithopoda", "ornithopoda", suborder)))
+
+unique(dinos2$suborder)
+```
+
+## Calculate mass in kilograms and pounds, depending on the suborder
+Add these to the existing data frame so we can plot them later
+```{r}
+dinos3 <- find_suborder_params(dinos2)
+
+dino_masses<- dinos3 %>%
+  mutate(mass_kg = round(a * length^b, 2),
+         mass_lbs = round(kg2lbs(mass_kg),2))
+
+```
+
+
+## Plot the data
+Plot the dinosaur masses by body length, and color the points by taxa. 
+```{r}
+ggplot(dino_masses, aes(length, mass_kg, group=suborder, col=suborder)) + 
+  geom_point(aes(size=mass_lbs), alpha=0.5) +
+  scale_y_log10() + 
+  scale_x_log10() + 
+  stat_smooth(method="lm")
+```
+
+```{r}
+smallest_dino <- dino_masses %>%
+  arrange(mass_kg) %>%
+  slice(1)
+
+largest_dino <- dino_masses %>%
+  arrange(desc(mass_kg)) %>%
+  slice(1)
+```
+
+
+The largest dinosaur is `r largest_dino$specimen_name` which is a `r largest_dino$mass_kg` kg `r largest_dino$suborder` and the smallest dinosaur is `r smallest_dino$specimen_name` which is a `r smallest_dino$mass_kg` kg `r smallest_dino$suborder`.
+
+# RAWR!!
+![http://placekitten.com/600/400](http://placekitten.com/600/400)
+
+
